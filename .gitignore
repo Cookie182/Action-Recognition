@@ -1,4 +1,3 @@
-
 Custom VGG16/my_VGG16/variables/variables.data-00000-of-00001
 *.index
 *.data-00000-of-00001
@@ -15,3 +14,6 @@ Custom VGG16/my_VGG16/variables/variables.data-00000-of-00001
 *.pb
 /UCF-101/
 /UCF11_updated_mpg/
+.gitignore
+.gitattributes
+__pycache__
