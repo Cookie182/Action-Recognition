@@ -3,4 +3,4 @@
 *.index
 UCF-101
 UCF11_updated_mpg
-.ipynb_checkpoints
+*.ipynb_checkpoints
