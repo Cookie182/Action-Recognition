@@ -110,7 +110,9 @@ if not os.path.exists(split_path):
                         frame_count += 1
                     clip.release()
                 sample_count += 1
-    print("\nFinished generating train/validation/test data\n")
+    print("\nFinished generating train/test data\n")
+else:
+    pritn("\ntrain/test data already created\n")
 
 
 def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
