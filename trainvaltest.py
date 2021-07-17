@@ -1,20 +1,19 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # nopep8
 
-FILE_PATH = '\\'.join(os.path.realpath(__file__).split('\\')[:3]) # path to directory for project
+FILE_PATH = '\\'.join(os.path.realpath(__file__).split('\\')[:3])  # path to directory for project
 from tqdm.auto import tqdm
 import pandas as pd
 import cv2
 import random
-from matplotlib import pyplot as plt
 
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 PATH = os.path.join(FILE_PATH, "UCF-101")  # path for dataset
 LABELS = tuple([x for x in os.listdir(PATH) if x not in ['TrainTest']])
-IMG_SIZE = (240, 240)
-N_FRAMES = 10  # only save every nth frame
+IMG_SIZE = (224, 224)
+N_FRAMES = 5  # only save every nth frame
 SEED = 123
 print("Amount of labels ->", len(LABELS), '\n')
 
@@ -34,10 +33,7 @@ for label in LABELS:
     label_path = os.path.join(PATH, label)
     clips = os.listdir(label_path)
     while True:
-        if sample_count < 10:
-            sample_name = f"g0{sample_count}"
-        else:
-            sample_name = f"g{sample_count}"
+        sample_name = f"g0{sample_count}" if sample_count <= 9 else f"g{sample_count}"
 
         if len([x for x in clips if sample_name in x]) > 0:
             sample_count += 1
@@ -67,7 +63,7 @@ for label in LABELS:
 
         samples.append([clip for clip in clip_names if clip_name in clip])
 
-    Test = random.choices(samples, k=2)
+    Test = random.choices(samples, k=6)
     Train = [x for x in samples if x not in Test]
 
     label_trainvaltest_split[label] = {
@@ -108,7 +104,7 @@ if not os.path.exists(split_path):
 
                         if frame_count % N_FRAMES == 0:
                             frame = cv2.resize(frame, IMG_SIZE, interpolation=cv2.INTER_AREA)
-                            frame_path = os.path.join(train_split_path, f"{frame_count//N_FRAMES}.jpeg")
+                            frame_path = os.path.join(train_split_path, f"{label}_{frame_count//N_FRAMES}.jpeg")
                             cv2.imwrite(frame_path, frame)
 
                         frame_count += 1
@@ -139,7 +135,6 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                         batch_size=BATCH_SIZE,
                                                         color_mode='rgb',
                                                         class_mode='sparse',
-                                                        subset='training',
                                                         shuffle=True,
                                                         target_size=IMG_SIZE,
                                                         seed=SEED)
@@ -152,6 +147,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                              shuffle=True,
                                                              target_size=IMG_SIZE,
                                                              seed=SEED)
+
     print("Test:")
     test_datagen = ImageDataGenerator(data_format='channels_last',
                                       dtype=D_TYPE)

@@ -137,17 +137,18 @@ class Model(keras.Model):
         """
         super(Model, self).__init__()
         self.n_labels = n_labels
-
         self.preprocess = Preprocess()
         self.cnnblock1 = CNNBlock(filters=64)
         self.cnnblock2 = CNNBlock(filters=128)
         self.cnnblock3 = CNNBlock(filters=256, triple=True)
         self.cnnblock4 = CNNBlock(filters=512, triple=True)
         self.cnnblock5 = CNNBlock(filters=512, triple=True)
-        self.globalavgpooling = layers.GlobalAveragePooling2D()
+        self.globalmaxpooling = layers.GlobalMaxPooling2D()
         self.flatten = layers.Flatten()
-        self.fc = layers.Dense(4096, activation=layers.ReLU())
-        self.dropout = layers.Dropout(0.25)
+        self.fc = layers.Dense(2048, activation=layers.ReLU())
+        self.dropout = layers.Dropout(0.1)
+        self.fc2 = layers.Dense(1024, activation=layers.ReLU())
+        self.dropout2 = layers.Dropout(0.1)
         self.outputs = layers.Dense(self.n_labels)
 
     @tf.function
@@ -166,10 +167,12 @@ class Model(keras.Model):
         x = self.cnnblock3(x)
         x = self.cnnblock4(x)
         x = self.cnnblock5(x)
-        x = self.globalavgpooling(x)
+        x = self.globalmaxpooling(x)
         x = self.flatten(x)
         x = self.dropout(x)
         x = self.fc(x)
+        x = self.dropout2(x)
+        x = self.fc2(x)
         x = self.outputs(x)
         return x
 
@@ -209,10 +212,12 @@ if __name__ == '__main__':
         "CNNBlock256_Triple",
         "CNNBlock512_Triple_1",
         "CNNBlock512_Triple_2",
-        "GlobalAvgPooling",
+        "GlobalMaxPooling",
         "Flatten",
-        "FC",
         "Dropout",
+        "FC",
+        "Dropout2",
+        "FC2",
         "Outputs"
     ])
 
