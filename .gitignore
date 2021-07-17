@@ -4,3 +4,4 @@
 UCF-101
 UCF11_updated_mpg
 *.ipynb_checkpoints
+__pycache__/trainvaltest.cpython-39.pyc
