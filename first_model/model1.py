@@ -106,7 +106,7 @@ class CNNBlock(layers.Layer):
         if self.triple == True:
             self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
         self.bn = layers.BatchNormalization()
-        self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
+        self.avgpooling = layers.AveragePooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
     @tf.function
     def call(self, input_tensor, training=False):
@@ -124,7 +124,7 @@ class CNNBlock(layers.Layer):
         if self.triple == True:
             x = self.conv3(x)
         x = self.bn(x, training=training)
-        x = self.maxpooling(x)
+        x = self.avgpooling(x)
         return x
 
 
