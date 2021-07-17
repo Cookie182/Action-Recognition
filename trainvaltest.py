@@ -112,7 +112,7 @@ if not os.path.exists(split_path):
                 sample_count += 1
     print("\nFinished generating train/test data\n")
 else:
-    pritn("\ntrain/test data already created\n")
+    print("\ntrain/test data already created\n")
 
 
 def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
