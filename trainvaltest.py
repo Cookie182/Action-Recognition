@@ -55,16 +55,16 @@ label_trainvaltest_split = dict()
 
 for label in LABELS:
     label_path = os.path.join(PATH, label)
-    clip_names = tuple([sample for sample in os.listdir(label_path)])
+    clip_names = tuple(os.listdir(label_path))
 
     samples = []
     for i in range(1, 26):  # since each label has 25 samples
         clip_name = f"g0{i}" if i < 10 else f"g{i}"
 
-        samples.append([clip for clip in clip_names if clip_name in clip])
+        samples.append(tuple([clip for clip in clip_names if clip_name in clip]))  # verify if each label has 25 different videos with samples
 
-    Test = random.choices(samples, k=6)
-    Train = [x for x in samples if x not in Test]
+    Test = tuple(random.choices(samples, k=6))
+    Train = tuple([x for x in samples if x not in Test])
 
     label_trainvaltest_split[label] = {
         'Train': Train,
