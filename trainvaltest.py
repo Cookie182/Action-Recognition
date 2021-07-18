@@ -162,11 +162,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                       target_size=IMG_SIZE,
                                                       seed=SEED)
 
-    INPUT_SHAPE = None
-    for image, label in train_generator:
-        if INPUT_SHAPE == None:
-            INPUT_SHAPE = image[0].shape
-        print("\nInput shape ->", INPUT_SHAPE, '\n')
-        break
+    INPUT_SHAPE = (*IMG_SIZE, 3)
+    print(f"\nInput shape -> {INPUT_SHAPE}\n")
 
     return len(LABELS), INPUT_SHAPE, train_generator, validation_generator, test_generator

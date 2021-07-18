@@ -15,7 +15,7 @@ from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "my_VGG16"
+MODEL_NAME = "my_VGG19"
 MODEL_PATH = f"{MODEL_NAME}"
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
@@ -79,12 +79,12 @@ def conv_layer(filters, kernel_size, padding, strides):
 
 
 class CNNBlock(layers.Layer):
-    def __init__(self, filters, triple=False, conv_kernel_size=(3, 3), conv_strides=(1, 1), pool_size=(2, 2), pool_strides=(2, 2), padding='same'):
+    def __init__(self, filters, quad=False, conv_kernel_size=(3, 3), conv_strides=(1, 1), pool_size=(2, 2), pool_strides=(2, 2), padding='same'):
         """block of either double (or triple) conv layers
 
         Args:
             filters (int): numbers of filters for the conv layers within this block
-            triple (bool, optional): whether this conv block contains double (2) or triple (3) conv layers. Defaults to False.
+            quad (bool, optional): whether this conv block contains double (2) or quadruple (4) conv layers. Defaults to False.
             conv_strides (tuple, optional): tuple to set strides value for conv layers. Defaults to (1, 1).
             conv_kernel_size (tuple, optional): kernel size for the conv layers in this block. Defaults to (3, 3).
             pool_size (tuple, optional): pool size for pooling layer for this block. Defaults to (2, 2).
@@ -92,7 +92,7 @@ class CNNBlock(layers.Layer):
             padding (str, optional): padding value of conv layers. Defaults to 'same'.
         """
         super(CNNBlock, self).__init__()
-        self.triple = triple
+        self.quad = quad
         self.pool_size = pool_size
         self.pool_strides = pool_strides
         self.filters = filters
@@ -102,8 +102,9 @@ class CNNBlock(layers.Layer):
 
         self.conv1 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
         self.conv2 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        if self.triple == True:
+        if self.quad == True:
             self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+            self.conv4 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
         self.bn = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
@@ -120,8 +121,9 @@ class CNNBlock(layers.Layer):
         """
         x = self.conv1(input_tensor)
         x = self.conv2(x)
-        if self.triple == True:
+        if self.quad == True:
             x = self.conv3(x)
+            x = self.conv4(x)
         x = self.bn(x, training=training)
         x = self.maxpooling(x)
         return x
@@ -140,9 +142,9 @@ class Model(keras.Model):
         self.preprocess = Preprocess()
         self.cnnblock1 = CNNBlock(filters=64)
         self.cnnblock2 = CNNBlock(filters=128)
-        self.cnnblock3 = CNNBlock(filters=256, triple=True)
-        self.cnnblock4 = CNNBlock(filters=512, triple=True)
-        self.cnnblock5 = CNNBlock(filters=512, triple=True)
+        self.cnnblock3 = CNNBlock(filters=256, quad=True)
+        self.cnnblock4 = CNNBlock(filters=512, quad=True)
+        self.cnnblock5 = CNNBlock(filters=512, quad=True)
         self.globalmaxpooling = layers.GlobalMaxPooling2D()
         self.flatten = layers.Flatten()
         self.fc = layers.Dense(4096, activation=layers.ReLU())
@@ -205,9 +207,9 @@ if __name__ == '__main__':
         "Preprocessing",
         "CNNBlock64_Double",
         "CNNBlock128_Double",
-        "CNNBlock256_Triple",
-        "CNNBlock512_Triple_1",
-        "CNNBlock512_Triple_2",
+        "CNNBlock256_Quad",
+        "CNNBlock512_Quad_1",
+        "CNNBlock512_Quad_2",
         "GlobalAvgPooling",
         "Flatten",
         "FC",
