@@ -10,7 +10,6 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
-import pandas as pd
 from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
@@ -62,22 +61,6 @@ class Preprocess(layers.Layer):
         return image
 
 
-def conv_layer(filters, kernel_size, padding, strides):
-    """Creates a convolution layer for CNNBlock
-
-    Args:
-        filters (int): number of filters in conv layer
-        kernel_size (int): kernel size for conv layer
-        padding (str): either 'same' padding or 'valid' padding
-        strides (int): strides for conv layer
-
-    Returns:
-        conv layer: returns configured conv layer for CNNBlock
-    """
-    layer = layers.Conv2D(filters=filters, kernel_size=kernel_size, padding=padding, strides=strides, activation=layers.ReLU())
-    return layer
-
-
 class CNNBlock(layers.Layer):
     def __init__(self, filters, triple=False, conv_kernel_size=(3, 3), conv_strides=(1, 1), pool_size=(2, 2), pool_strides=(2, 2), padding='same'):
         """block of either double (or triple) conv layers
@@ -100,11 +83,13 @@ class CNNBlock(layers.Layer):
         self.conv_strides = conv_strides
         self.padding = padding
 
-        self.conv1 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.conv2 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+        self.conv1 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+        self.bn1 = layers.BatchNormalization()
+        self.conv2 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+        self.bn2 = layers.BatchNormalization()
         if self.triple == True:
-            self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.bn = layers.BatchNormalization()
+            self.conv3 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+            self.bn3 = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
     @tf.function
@@ -119,10 +104,17 @@ class CNNBlock(layers.Layer):
             tensor: output of the current CNN block
         """
         x = self.conv1(input_tensor)
+        x = self.bn1(x, training=training)
+        x = tf.nn.relu(x)
+
         x = self.conv2(x)
+        x = self.bn2(x, training=training)
+        x = tf.nn.relu(x)
+
         if self.triple == True:
             x = self.conv3(x)
-        x = self.bn(x, training=training)
+            x = self.bn3(x, training=training)
+            x = tf.nn.relu(x)
         x = self.maxpooling(x)
         return x
 
@@ -146,11 +138,13 @@ class Model(keras.Model):
         self.globalmaxpooling = layers.GlobalMaxPooling2D()
         self.flatten = layers.Flatten()
         self.fc = layers.Dense(4096, activation=layers.ReLU())
+        self.dropout1 = layers.Dropout(0.5)
         self.fc2 = layers.Dense(4096, activation=layers.ReLU())
+        self.dropout2 = layers.Dropout(0.5)
         self.outputs = layers.Dense(self.n_labels)
 
     @tf.function
-    def call(self, input_tensor, training=False):
+    def call(self, input_tensor):
         """forward propagation for the entire model between each layer
 
         Args:
@@ -168,7 +162,9 @@ class Model(keras.Model):
         x = self.globalmaxpooling(x)
         x = self.flatten(x)
         x = self.fc(x)
+        x = self.dropout1(x)
         x = self.fc2(x)
+        x = self.dropout2(x)
         x = self.outputs(x)
         return x
 
@@ -211,7 +207,9 @@ if __name__ == '__main__':
         "GlobalAvgPooling",
         "Flatten",
         "FC",
+        "Dropout1",
         "FC2",
+        "Dropout2",
         "Outputs"
     ])
 
