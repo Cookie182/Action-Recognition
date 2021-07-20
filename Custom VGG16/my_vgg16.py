@@ -16,9 +16,9 @@ tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[
 
 MODEL_NAME = "my_VGG16"
 MODEL_PATH = f"{MODEL_NAME}"
-BATCH_SIZE = 16
+BATCH_SIZE = 8
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-EPOCHS = 30
+EPOCHS = 10
 VERBOSE = 1
 
 
@@ -138,9 +138,7 @@ class Model(keras.Model):
         self.globalmaxpooling = layers.GlobalMaxPooling2D()
         self.flatten = layers.Flatten()
         self.fc = layers.Dense(4096, activation=layers.ReLU())
-        self.dropout1 = layers.Dropout(0.5)
         self.fc2 = layers.Dense(4096, activation=layers.ReLU())
-        self.dropout2 = layers.Dropout(0.5)
         self.outputs = layers.Dense(self.n_labels)
 
     @tf.function
@@ -162,9 +160,7 @@ class Model(keras.Model):
         x = self.globalmaxpooling(x)
         x = self.flatten(x)
         x = self.fc(x)
-        x = self.dropout1(x)
         x = self.fc2(x)
-        x = self.dropout2(x)
         x = self.outputs(x)
         return x
 
@@ -207,9 +203,7 @@ if __name__ == '__main__':
         "GlobalAvgPooling",
         "Flatten",
         "FC",
-        "Dropout1",
         "FC2",
-        "Dropout2",
         "Outputs"
     ])
 
