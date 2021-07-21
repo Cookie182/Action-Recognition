@@ -10,7 +10,6 @@ import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.layers.experimental import preprocessing
-import pandas as pd
 from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
@@ -62,22 +61,6 @@ class Preprocess(layers.Layer):
         return image
 
 
-def conv_layer(filters, kernel_size, padding, strides):
-    """Creates a convolution layer for CNNBlock
-
-    Args:
-        filters (int): number of filters in conv layer
-        kernel_size (int): kernel size for conv layer
-        padding (str): either 'same' padding or 'valid' padding
-        strides (int): strides for conv layer
-
-    Returns:
-        conv layer: returns configured conv layer for CNNBlock
-    """
-    layer = layers.Conv2D(filters=filters, kernel_size=kernel_size, padding=padding, strides=strides, activation=layers.ReLU())
-    return layer
-
-
 class CNNBlock(layers.Layer):
     def __init__(self, filters, quad=False, conv_kernel_size=(3, 3), conv_strides=(1, 1), pool_size=(2, 2), pool_strides=(2, 2), padding='same'):
         """block of either double (or triple) conv layers
@@ -100,13 +83,17 @@ class CNNBlock(layers.Layer):
         self.conv_strides = conv_strides
         self.padding = padding
 
-        self.conv1 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.conv2 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+        self.conv1 = self.conv_layer()
+        self.conv2 = self.conv_layer()
         if self.quad == True:
-            self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-            self.conv4 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.bn = layers.BatchNormalization()
+            self.conv3 = self.conv_layer()
+            self.conv4 = self.conv_layer()
+        self.batch_norm = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
+
+    def conv_layer(self):
+        return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
+                             padding=self.padding, activation=layers.ReLU())
 
     @tf.function
     def call(self, input_tensor, training=False):
@@ -124,7 +111,7 @@ class CNNBlock(layers.Layer):
         if self.quad == True:
             x = self.conv3(x)
             x = self.conv4(x)
-        x = self.bn(x, training=training)
+        x = self.batch_norm(x, training=training)
         x = self.maxpooling(x)
         return x
 
@@ -152,7 +139,7 @@ class Model(keras.Model):
         self.outputs = layers.Dense(self.n_labels)
 
     @tf.function
-    def call(self, input_tensor, training=False):
+    def call(self, input_tensor):
         """forward propagation for the entire model between each layer
 
         Args:
@@ -172,6 +159,7 @@ class Model(keras.Model):
         x = self.fc(x)
         x = self.fc2(x)
         x = self.outputs(x)
+
         return x
 
 
@@ -187,10 +175,11 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
     Returns:
         model: named and configured model with input/output and named layers
     """
-    model = Model(n_labels=n_labels)
-
-    for i, layer in enumerate(model.layers):
+    model = keras.Sequential()
+    for i, layer in enumerate(Model(n_labels=n_labels).layers):
+        model.add(layer)
         layer._name = layer_names[i]
+
     model._name = model_name
     model.build(input_shape=(None, *inp_shape))
 

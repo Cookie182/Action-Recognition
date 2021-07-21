@@ -63,7 +63,7 @@ for label in LABELS:
 
         samples.append(tuple([clip for clip in clip_names if clip_name in clip]))  # verify if each label has 25 different videos with samples
 
-    Test = tuple(random.choices(samples, k=6))
+    Test = tuple(random.choices(samples, k=7))
     Train = tuple([x for x in samples if x not in Test])
 
     label_trainvaltest_split[label] = {

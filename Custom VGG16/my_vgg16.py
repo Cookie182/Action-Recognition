@@ -83,14 +83,16 @@ class CNNBlock(layers.Layer):
         self.conv_strides = conv_strides
         self.padding = padding
 
-        self.conv1 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.bn1 = layers.BatchNormalization()
-        self.conv2 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.bn2 = layers.BatchNormalization()
+        self.conv1 = self.conv_layer()
+        self.conv2 = self.conv_layer()
         if self.triple == True:
-            self.conv3 = layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-            self.bn3 = layers.BatchNormalization()
+            self.conv3 = self.conv_layer()
+        self.batch_norm = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
+
+    def conv_layer(self):
+        return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
+                             padding=self.padding, activation=layers.ReLU())
 
     @tf.function
     def call(self, input_tensor, training=False):
@@ -104,17 +106,10 @@ class CNNBlock(layers.Layer):
             tensor: output of the current CNN block
         """
         x = self.conv1(input_tensor)
-        x = self.bn1(x, training=training)
-        x = tf.nn.relu(x)
-
         x = self.conv2(x)
-        x = self.bn2(x, training=training)
-        x = tf.nn.relu(x)
-
         if self.triple == True:
             x = self.conv3(x)
-            x = self.bn3(x, training=training)
-            x = tf.nn.relu(x)
+        x = self.batch_norm(x, training=training)
         x = self.maxpooling(x)
         return x
 
@@ -177,10 +172,11 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
     Returns:
         model: named and configured model with input/output and named layers
     """
-    model = Model(n_labels=n_labels)
-
-    for i, layer in enumerate(model.layers):
+    model = keras.Sequential()
+    for i, layer in enumerate(Model(n_labels=n_labels).layers):
+        model.add(layer)
         layer._name = layer_names[i]
+
     model._name = model_name
     model.build(input_shape=(None, *inp_shape))
 

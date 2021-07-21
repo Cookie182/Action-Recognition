@@ -189,10 +189,11 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
     Returns:
         model: named and configured model with input/output and named layers
     """
-    model = Model(n_labels=n_labels)
-
-    for i, layer in enumerate(model.layers):
+    model = keras.Sequential()
+    for i, layer in enumerate(Model(n_labels=n_labels).layers):
+        model.add(layer)
         layer._name = layer_names[i]
+
     model._name = model_name
     model.build(input_shape=(None, *inp_shape))
 
