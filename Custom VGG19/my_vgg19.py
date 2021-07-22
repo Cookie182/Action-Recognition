@@ -14,8 +14,8 @@ from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "my_VGG19"
-MODEL_PATH = f"{MODEL_NAME}"
+MODEL_NAME = "my_VGG19.h5"
+MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
 EPOCHS = 30
@@ -42,6 +42,16 @@ class Preprocess(layers.Layer):
         self.randomzoom = preprocessing.RandomZoom(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
         self.shift = preprocessing.RandomTranslation(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
         self.flip = preprocessing.RandomFlip(mode=self.flipmode, seed=self.seed)
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'factor': self.factor,
+            'scale': self.scale,
+            'flipmode': self.flipmode,
+            'seed': self.seed
+        })
+        return config
 
     @tf.function
     def call(self, image):
@@ -91,12 +101,24 @@ class CNNBlock(layers.Layer):
         self.batch_norm = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'quad': self.quad,
+            'pool_size': self.pool_size,
+            'pool_strides': self.pool_strides,
+            'filters': self.filters,
+            'conv_kernel_size': self.conv_kernel_size,
+            'conv_strides': self.conv_strides,
+            'padding': self.padding,
+        })
+        return config
+
     def conv_layer(self):
         return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
                              padding=self.padding, activation=layers.ReLU())
 
-    @tf.function
-    def call(self, input_tensor, training=False):
+    def __call__(self, input_tensor, training=False):
         """forward propagation
 
         Args:
@@ -163,7 +185,7 @@ class Model(keras.Model):
         return x
 
 
-def create_model(inp_shape, n_labels, model_name, layer_names):
+def create_model(inp_shape, n_labels, model_name):
     """creates model (input and output), name layers and compile
 
     Args:
@@ -175,11 +197,7 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
     Returns:
         model: named and configured model with input/output and named layers
     """
-    model = keras.Sequential()
-    for i, layer in enumerate(Model(n_labels=n_labels).layers):
-        model.add(layer)
-        layer._name = layer_names[i]
-
+    model = keras.Sequential(Model(n_labels=n_labels).layers)
     model._name = model_name
     model.build(input_shape=(None, *inp_shape))
 
@@ -192,21 +210,7 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
 
 
 if __name__ == '__main__':
-    layer_names = tuple([
-        "Preprocessing",
-        "CNNBlock64_Double",
-        "CNNBlock128_Double",
-        "CNNBlock256_Quad",
-        "CNNBlock512_Quad_1",
-        "CNNBlock512_Quad_2",
-        "GlobalAvgPooling",
-        "Flatten",
-        "FC",
-        "FC2",
-        "Outputs"
-    ])
-
-    model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME, layer_names=layer_names)
+    model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
 

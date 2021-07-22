@@ -14,8 +14,8 @@ from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "my_VGG16"
-MODEL_PATH = f"{MODEL_NAME}"
+MODEL_NAME = "my_VGG16.h5"
+MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
 BATCH_SIZE = 8
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
 EPOCHS = 10
@@ -42,6 +42,16 @@ class Preprocess(layers.Layer):
         self.randomzoom = preprocessing.RandomZoom(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
         self.shift = preprocessing.RandomTranslation(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
         self.flip = preprocessing.RandomFlip(mode=self.flipmode, seed=self.seed)
+
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'factor': self.factor,
+            'scale': self.scale,
+            'seed': self.seed,
+            'flipmode': self.flipmode
+        })
+        return config
 
     @tf.function
     def call(self, image):
@@ -90,12 +100,24 @@ class CNNBlock(layers.Layer):
         self.batch_norm = layers.BatchNormalization()
         self.maxpooling = layers.MaxPooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
+    def get_config(self):
+        config = super().get_config().copy()
+        config.update({
+            'triple': self.triple,
+            'pool_size': self.pool_size,
+            'pool_strides': self.pool_strides,
+            'filters': self.filters,
+            'conv_kernel_size': self.conv_kernel_size,
+            'conv_strides': self.conv_strides,
+            'padding': self.padding
+        })
+        return config
+
     def conv_layer(self):
         return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
                              padding=self.padding, activation=layers.ReLU())
 
-    @tf.function
-    def call(self, input_tensor, training=False):
+    def __call__(self, input_tensor, training=False):
         """forward propagation
 
         Args:
@@ -160,7 +182,7 @@ class Model(keras.Model):
         return x
 
 
-def create_model(inp_shape, n_labels, model_name, layer_names):
+def create_model(inp_shape, n_labels, model_name):
     """creates model (input and output), name layers and compile
 
     Args:
@@ -172,11 +194,7 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
     Returns:
         model: named and configured model with input/output and named layers
     """
-    model = keras.Sequential()
-    for i, layer in enumerate(Model(n_labels=n_labels).layers):
-        model.add(layer)
-        layer._name = layer_names[i]
-
+    model = keras.Sequential(Model(n_labels=n_labels).layers)
     model._name = model_name
     model.build(input_shape=(None, *inp_shape))
 
@@ -189,21 +207,7 @@ def create_model(inp_shape, n_labels, model_name, layer_names):
 
 
 if __name__ == '__main__':
-    layer_names = tuple([
-        "Preprocessing",
-        "CNNBlock64_Double",
-        "CNNBlock128_Double",
-        "CNNBlock256_Triple",
-        "CNNBlock512_Triple_1",
-        "CNNBlock512_Triple_2",
-        "GlobalAvgPooling",
-        "Flatten",
-        "FC",
-        "FC2",
-        "Outputs"
-    ])
-
-    model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME, layer_names=layer_names)
+    model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
 
@@ -224,10 +228,10 @@ if __name__ == '__main__':
     train = model.fit(Train_Data,
                       epochs=EPOCHS,
                       verbose=VERBOSE,
-                      steps_per_epoch=len(Train_Data) // BATCH_SIZE,
+                      steps_per_epoch=5,
                       callbacks=callbacks,
                       validation_data=Val_Data,
-                      validation_steps=len(Val_Data) // BATCH_SIZE,
+                      validation_steps=2,
                       use_multiprocessing=True,
                       workers=-1)
 
