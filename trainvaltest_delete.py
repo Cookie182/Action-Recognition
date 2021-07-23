@@ -4,16 +4,17 @@ from tqdm.auto import tqdm
 
 DIR = "\\".join(os.path.realpath(__file__).split("\\")[:-1])
 TRAINVALTEST_SPLIT = os.path.join(DIR, "UCF-101", "TrainTest")
-
-if os.path.exists(TRAINVALTEST_SPLIT):
-    split_pbar = tqdm(os.listdir(TRAINVALTEST_SPLIT), leave=False, colour='white', position=1)
-    for split in split_pbar:
-        split_pbar.set_description(f"Split - {split}")
-        for label_folder in os.listdir(os.path.join(TRAINVALTEST_SPLIT, split)):
-            frame_pbar = tqdm(os.listdir(os.path.join(TRAINVALTEST_SPLIT, split, label_folder)), leave=False, colour='white', position=2)
-            for frame in frame_pbar:
-                frame_pbar.set_description(f"Deleting {frame}")
-                os.remove(os.path.join(TRAINVALTEST_SPLIT, split, label_folder, frame))
+if os.path.exists(TRAINVALTEST_SPLIT): # if traintest folder exists in UCF-101 folder
+    for split in os.listdir(TRAINVALTEST_SPLIT): # for each split ("Train", "Test")
+        folder_pbar = tqdm(os.listdir(os.path.join(TRAINVALTEST_SPLIT, split)), leave=False, position=0)
+        for folder in folder_pbar: # each class in dataset
+            folder_pbar.set_description(f"{split} -> {folder}")
+            folder_path = os.path.join(TRAINVALTEST_SPLIT, split, folder)
+            frame_pbar = tqdm(os.listdir(folder_path), leave=False, position=1)
+            for frame in frame_pbar: # delete each frame in class for split in dataset
+                frame_pbar.set_description("Deleting frames")
+                frame_path = os.path.join(folder_path, frame)
+                os.remove(frame_path)
     shutil.rmtree(TRAINVALTEST_SPLIT)
     print("Done!\n")
 else:
