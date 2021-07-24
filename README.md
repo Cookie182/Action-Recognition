@@ -8,7 +8,9 @@ Comparing my model, [first_model](https://github.com/Cookie182/Action-Recognitio
 
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
+
 # **DIRECTORY STRUCUTRE**
+``BASH
 $ tree 'Action Recognition' -L 2
 Action Recognition
 |-- Custom VGG16
@@ -134,3 +136,4 @@ Action Recognition
 |   `-- testing.py
 |-- trainvaltest.py
 `-- trainvaltest_delete.py
+``
