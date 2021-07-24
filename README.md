@@ -10,7 +10,7 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 
 # **DIRECTORY STRUCUTRE**
-``BASH
+```BASH
 $ tree 'Action Recognition' -L 2
 Action Recognition
 |-- Custom VGG16
@@ -136,4 +136,4 @@ Action Recognition
 |   `-- testing.py
 |-- trainvaltest.py
 `-- trainvaltest_delete.py
-``
+```
