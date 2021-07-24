@@ -16,9 +16,9 @@ tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[
 
 MODEL_NAME = "my_VGG16.h5"
 MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
-BATCH_SIZE = 8
+BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-EPOCHS = 10
+EPOCHS = 20
 VERBOSE = 1
 
 
@@ -115,7 +115,8 @@ class CNNBlock(layers.Layer):
 
     def conv_layer(self):
         return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
-                             padding=self.padding, activation=layers.ReLU())
+                             padding=self.padding, use_bias=False, activation=layers.ReLU(),
+                             kernel_initializer='he_normal')
 
     def __call__(self, input_tensor, training=False):
         """forward propagation
@@ -228,10 +229,10 @@ if __name__ == '__main__':
     train = model.fit(Train_Data,
                       epochs=EPOCHS,
                       verbose=VERBOSE,
-                      steps_per_epoch=5,
+                      steps_per_epoch=len(Train_Data) // BATCH_SIZE,
                       callbacks=callbacks,
                       validation_data=Val_Data,
-                      validation_steps=2,
+                      validation_steps=len(Val_Data) // BATCH_SIZE,
                       use_multiprocessing=True,
                       workers=-1)
 

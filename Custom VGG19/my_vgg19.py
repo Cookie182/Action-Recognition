@@ -116,7 +116,7 @@ class CNNBlock(layers.Layer):
 
     def conv_layer(self):
         return layers.Conv2D(filters=self.filters, kernel_size=self.conv_kernel_size, strides=self.conv_strides,
-                             padding=self.padding, activation=layers.ReLU())
+                             padding=self.padding, activation=layers.ReLU(), use_bias=False, kernel_initializer='he_normal')
 
     def __call__(self, input_tensor, training=False):
         """forward propagation

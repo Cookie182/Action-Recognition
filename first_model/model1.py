@@ -85,7 +85,8 @@ def conv_layer(filters, kernel_size, padding, strides):
     Returns:
         conv layer: returns configured conv layer for CNNBlock
     """
-    layer = layers.Conv2D(filters=filters, kernel_size=kernel_size, padding=padding, strides=strides, activation=layers.ReLU())
+    layer = layers.Conv2D(filters=filters, kernel_size=kernel_size, padding=padding, strides=strides,
+                          activation=layers.ReLU(), use_bias=False, kernel_initializer='he_normal')
     return layer
 
 
