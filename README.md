@@ -9,7 +9,7 @@ Comparing my model, [first_model](https://github.com/Cookie182/Action-Recognitio
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 
-# **DIRECTORY STRUCUTRE**
+## **DIRECTORY STRUCUTRE**
 ```BASH
 $ tree 'Action Recognition' -L 2
 Action Recognition
@@ -131,9 +131,10 @@ Action Recognition
 |   |-- model1.py
 |   |-- model1_notebook.ipynb
 |   `-- the_first_war.h5
-|-- model2.py
 |-- testing
 |   `-- testing.py
 |-- trainvaltest.py
 `-- trainvaltest_delete.py
+
+108 directories, 14 files
 ```
