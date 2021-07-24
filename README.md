@@ -7,3 +7,130 @@ Comparing my model, [first_model](https://github.com/Cookie182/Action-Recognitio
 [trainvaltest_delete.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest_delete.py): Script to navigate to the TrainTest folder in the UCF-101 dataset created when the trainvaltest.py script is ran, and delete it's contents and the TrainTest folder.
 
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
+
+# **DIRECTORY STRUCUTRE**
+$ tree 'Action Recognition' -L 2
+Action Recognition
+|-- Custom VGG16
+|   |-- my_VGG16.h5
+|   |-- my_VGG16.ipynb
+|   `-- my_vgg16.py
+|-- Custom VGG19
+|   |-- my_VGG19.h5
+|   |-- my_VGG19.ipynb
+|   `-- my_vgg19.py
+|-- README.md
+|-- UCF-101
+|   |-- ApplyEyeMakeup
+|   |-- ApplyLipstick
+|   |-- Archery
+|   |-- BabyCrawling
+|   |-- BalanceBeam
+|   |-- BandMarching
+|   |-- BaseballPitch
+|   |-- Basketball
+|   |-- BasketballDunk
+|   |-- BenchPress
+|   |-- Biking
+|   |-- Billiards
+|   |-- BlowDryHair
+|   |-- BlowingCandles
+|   |-- BodyWeightSquats
+|   |-- Bowling
+|   |-- BoxingPunchingBag
+|   |-- BoxingSpeedBag
+|   |-- BreastStroke
+|   |-- BrushingTeeth
+|   |-- CleanAndJerk
+|   |-- CliffDiving
+|   |-- CricketBowling
+|   |-- CricketShot
+|   |-- CuttingInKitchen
+|   |-- Diving
+|   |-- Drumming
+|   |-- Fencing
+|   |-- FieldHockeyPenalty
+|   |-- FloorGymnastics
+|   |-- FrisbeeCatch
+|   |-- FrontCrawl
+|   |-- GolfSwing
+|   |-- Haircut
+|   |-- HammerThrow
+|   |-- Hammering
+|   |-- HandstandPushups
+|   |-- HandstandWalking
+|   |-- HeadMassage
+|   |-- HighJump
+|   |-- HorseRace
+|   |-- HorseRiding
+|   |-- HulaHoop
+|   |-- IceDancing
+|   |-- JavelinThrow
+|   |-- JugglingBalls
+|   |-- JumpRope
+|   |-- JumpingJack
+|   |-- Kayaking
+|   |-- Knitting
+|   |-- LongJump
+|   |-- Lunges
+|   |-- MilitaryParade
+|   |-- Mixing
+|   |-- MoppingFloor
+|   |-- Nunchucks
+|   |-- ParallelBars
+|   |-- PizzaTossing
+|   |-- PlayingCello
+|   |-- PlayingDaf
+|   |-- PlayingDhol
+|   |-- PlayingFlute
+|   |-- PlayingGuitar
+|   |-- PlayingPiano
+|   |-- PlayingSitar
+|   |-- PlayingTabla
+|   |-- PlayingViolin
+|   |-- PoleVault
+|   |-- PommelHorse
+|   |-- PullUps
+|   |-- Punch
+|   |-- PushUps
+|   |-- Rafting
+|   |-- RockClimbingIndoor
+|   |-- RopeClimbing
+|   |-- Rowing
+|   |-- SalsaSpin
+|   |-- ShavingBeard
+|   |-- Shotput
+|   |-- SkateBoarding
+|   |-- Skiing
+|   |-- Skijet
+|   |-- SkyDiving
+|   |-- SoccerJuggling
+|   |-- SoccerPenalty
+|   |-- StillRings
+|   |-- SumoWrestling
+|   |-- Surfing
+|   |-- Swing
+|   |-- TableTennisShot
+|   |-- TaiChi
+|   |-- TennisSwing
+|   |-- ThrowDiscus
+|   |-- TrainTest
+|   |-- TrampolineJumping
+|   |-- Typing
+|   |-- UnevenBars
+|   |-- VolleyballSpiking
+|   |-- WalkingWithDog
+|   |-- WallPushups
+|   |-- WritingOnBoard
+|   `-- YoYo
+|-- __pycache__
+|   `-- trainvaltest.cpython-39.pyc
+|-- first_model
+|   |-- model1.py
+|   |-- model1_notebook.ipynb
+|   `-- the_first_war.h5
+|-- model2.py
+|-- testing
+|   `-- testing.py
+|-- trainvaltest.py
+`-- trainvaltest_delete.py
