@@ -6,7 +6,7 @@ from tensorflow.keras.layers.experimental import preprocessing
 
 
 class PreprocessingLayers(layers.Layer):
-    def __init__(self, factor=0.2, scale=1.0 / 255.0, flipmode='horizontal', seed=182):
+    def __init__(self, factor=0.3, scale=1.0 / 255.0, flipmode='horizontal_and_vertical', seed=182):
         """Image preprocessing layer Block
 
         Args:
@@ -23,13 +23,14 @@ class PreprocessingLayers(layers.Layer):
         self.rescale = preprocessing.Rescaling(scale=self.scale)
         self.randomrotate = preprocessing.RandomRotation(factor=self.factor, seed=self.seed)
         self.randomzoom = preprocessing.RandomZoom(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
-        self.shift = preprocessing.RandomTranslation(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
+        self.translation = preprocessing.RandomTranslation(height_factor=self.factor, width_factor=self.factor, seed=self.seed)
+        self.contrast = preprocessing.RandomContrast(factor=self.factor, seed=self.seed)
         self.flip = preprocessing.RandomFlip(mode=self.flipmode, seed=self.seed)
 
     def get_config(self):
         config = super().get_config().copy()
         config.update({
-            'facotr': self.factor,
+            'factor': self.factor,
             'scale': self.scale,
             'seed': self.seed,
             'flipmode': self.flipmode
@@ -49,6 +50,7 @@ class PreprocessingLayers(layers.Layer):
         image = self.rescale(image)
         image = self.randomrotate(image)
         image = self.randomzoom(image)
-        image = self.shift(image)
+        image = self.translation(image)
+        image = self.contrast(image)
         image = self.flip(image)
         return image

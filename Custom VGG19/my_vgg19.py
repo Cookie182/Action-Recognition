@@ -18,8 +18,9 @@ MODEL_NAME = "my_VGG19.h5"
 MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-EPOCHS = 30
+EPOCHS = 20
 VERBOSE = 1
+
 
 class CNNBlock(layers.Layer):
     def __init__(self, filters, quad=False, conv_kernel_size=(3, 3), conv_strides=(1, 1), pool_size=(2, 2), pool_strides=(2, 2), padding='same'):

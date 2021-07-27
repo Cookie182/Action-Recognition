@@ -137,6 +137,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                         batch_size=BATCH_SIZE,
                                                         color_mode='rgb',
                                                         class_mode='sparse',
+                                                        subset='training',
                                                         shuffle=True,
                                                         target_size=IMG_SIZE,
                                                         seed=SEED)
