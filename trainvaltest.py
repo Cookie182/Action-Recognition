@@ -130,7 +130,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
     D_TYPE = tf.float64
     print("\nTrain:")
     train_datagen = ImageDataGenerator(data_format='channels_last',
-                                       validation_split=0.1,
+                                       validation_split=0.2,
                                        dtype=D_TYPE)
 
     train_generator = train_datagen.flow_from_directory(train_path,

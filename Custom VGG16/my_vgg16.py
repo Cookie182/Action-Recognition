@@ -204,4 +204,5 @@ if __name__ == '__main__':
     plt.legend()
     plt.margins(x=0, y=0)
     plt.tight_layout()
+    plt.savefig(os.path.join(*FILE_PATH.split("\\")[3:-1], f"{MODEL_NAME}_performance.png"))
     plt.show()
