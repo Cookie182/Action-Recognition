@@ -9,6 +9,8 @@ import argparse
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+import pandas as pd
+from matplotlib import pyplot as plt
 import preprocess
 from trainvaltest import trainvaltest
 
@@ -162,12 +164,11 @@ def create_model(inp_shape, n_labels, model_name):
 
 if __name__ == '__main__':
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
-
-    model_png_path = os.path.join(*FILE_PATH.split("\\")[2:-1], f"{MODEL_NAME}.png")
-    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
-
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
+
+    model_png_path = os.path.join(*FILE_PATH.split("\\")[3:-1], f"{MODEL_NAME}.png")
+    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--save', help='save the model', action='store_true')
@@ -194,3 +195,14 @@ if __name__ == '__main__':
                       workers=-1)
 
     test = model.evaluate(Test_Data, steps=len(Test_Data) // BATCH_SIZE, workers=-1, use_multiprocessing=True, verbose=VERBOSE)
+
+    train_history = pd.DataFrame(train.history)
+    plt.figure(figsize=(8, 6))
+    plt.title(f"Test stats:\nLoss: {test[0]} \nAcc: {test[1]}")
+    for label in train_history.keys():
+        plt.plot(train_history[label], label=label, linestyle='--' if label[:3] == 'val' else '-')
+    plt.xlabel('Epochs')
+    plt.legend()
+    plt.margins(x=0, y=0)
+    plt.tight_layout()
+    plt.show()

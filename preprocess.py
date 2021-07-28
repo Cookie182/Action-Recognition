@@ -6,7 +6,7 @@ from tensorflow.keras.layers.experimental import preprocessing
 
 
 class PreprocessingLayers(layers.Layer):
-    def __init__(self, factor=0.3, scale=1.0 / 255.0, flipmode='horizontal_and_vertical', seed=182):
+    def __init__(self, factor=0.15, scale=1.0 / 255.0, flipmode='horizontal', seed=182):
         """Image preprocessing layer Block
 
         Args:
@@ -17,8 +17,8 @@ class PreprocessingLayers(layers.Layer):
         super(PreprocessingLayers, self).__init__()
         self.factor = factor
         self.scale = scale
-        self.seed = seed
         self.flipmode = flipmode
+        self.seed = seed
 
         self.rescale = preprocessing.Rescaling(scale=self.scale)
         self.randomrotate = preprocessing.RandomRotation(factor=self.factor, seed=self.seed)
