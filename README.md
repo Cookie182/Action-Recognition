@@ -10,6 +10,7 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 
 ## **DIRECTORY STRUCUTRE**
+```BASH
 .
 |-- Custom VGG16
 |   |-- my_VGG16.h5
@@ -143,3 +144,4 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 `-- trainvaltest_delete.py
 
 108 directories, 22 files
+```
