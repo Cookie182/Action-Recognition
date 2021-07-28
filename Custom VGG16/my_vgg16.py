@@ -14,8 +14,8 @@ from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "my_VGG16.h5"
-MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
+MODEL_NAME = "my_VGG16"
+MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), f"{MODEL_NAME}.h5")
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
 EPOCHS = 20
@@ -160,6 +160,10 @@ def create_model(inp_shape, n_labels, model_name):
 
 if __name__ == '__main__':
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
+
+    model_png_path = os.path.join(*FILE_PATH.split("\\")[2:-1], f"{MODEL_NAME}.png")
+    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
+
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
 

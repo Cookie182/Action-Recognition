@@ -162,6 +162,10 @@ def create_model(inp_shape, n_labels, model_name):
 
 if __name__ == '__main__':
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
+
+    model_png_path = os.path.join(*FILE_PATH.split("\\")[2:-1], f"{MODEL_NAME}.png")
+    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
+
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
 

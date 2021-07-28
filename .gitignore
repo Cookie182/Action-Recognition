@@ -7,4 +7,5 @@ UCF11_updated_mpg
 __pycache__/trainvaltest.cpython-39.pyc
 *.h5
 testing/
+*.png
 *.pyc

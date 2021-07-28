@@ -15,11 +15,11 @@ from trainvaltest import trainvaltest
 import preprocess
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "the_first_war.h5"
-MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
+MODEL_NAME = "the_first_war"
+MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), f"{MODEL_NAME}.h5")
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-EPOCHS = 30
+EPOCHS = 20
 VERBOSE = 1
 
 
@@ -176,6 +176,10 @@ def create_model(inp_shape, n_labels, model_name):
 
 if __name__ == '__main__':
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
+
+    model_png_path = os.path.join(*FILE_PATH.split("\\")[2:-1], f"{MODEL_NAME}.png")
+    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
+    
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
     callbacks = [earlystopping]
 
@@ -183,7 +187,8 @@ if __name__ == '__main__':
     parser.add_argument('--save', help='save the model', action='store_true')
     args = parser.parse_args()
     if args.save:
-        best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=MODEL_PATH,
+        model_png_path = os.join(*MODEL_PATH.split("\\")[:-1], f"{MODEL_PATH}".h5)
+        best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_png_path,
                                                           monitor='val_acc',
                                                           save_best_only=True,
                                                           save_freq='epoch',
@@ -192,6 +197,8 @@ if __name__ == '__main__':
         print("\nModel IS being saved after every epoch!\n")
     else:
         print("\nModel is NOT being saved!\n")
+
+    keras.utils.plot_model(model, to_file=f"{MODEL_NAME}.png", show_shapes=True)
 
     train = model.fit(Train_Data,
                       epochs=EPOCHS,
