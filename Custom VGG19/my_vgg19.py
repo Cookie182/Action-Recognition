@@ -14,8 +14,8 @@ from trainvaltest import trainvaltest
 
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
 
-MODEL_NAME = "my_VGG19.h5"
-MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), MODEL_NAME)
+MODEL_NAME = "my_VGG19"
+MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), f"{MODEL_NAME}.h5")
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
 EPOCHS = 20

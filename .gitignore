@@ -9,3 +9,4 @@ __pycache__/trainvaltest.cpython-39.pyc
 testing/
 *.png
 *.pyc
+directory.txt
