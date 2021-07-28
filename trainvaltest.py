@@ -127,7 +127,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
         tuples: returns the amount of labels, input shape for input layer and generator for each dataset split (train, validation, test)
     """
 
-    D_TYPE = tf.float32
+    D_TYPE = tf.float64
     print("\nTrain:")
     train_datagen = ImageDataGenerator(data_format='channels_last',
                                        validation_split=0.1,
