@@ -10,15 +10,15 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 
 ## **DIRECTORY STRUCUTRE**
-```BASH
-$ tree 'Action Recognition' -L 2
-Action Recognition
+.
 |-- Custom VGG16
 |   |-- my_VGG16.h5
 |   |-- my_VGG16.ipynb
+|   |-- my_VGG16.png
 |   `-- my_vgg16.py
 |-- Custom VGG19
 |   |-- my_VGG19.h5
+|   |-- my_VGG19.h5.png
 |   |-- my_VGG19.ipynb
 |   `-- my_vgg19.py
 |-- README.md
@@ -126,15 +126,20 @@ Action Recognition
 |   |-- WritingOnBoard
 |   `-- YoYo
 |-- __pycache__
+|   |-- Preprocessing.cpython-39.pyc
+|   |-- PreprocessingLayers.cpython-39.pyc
+|   |-- preprocess.cpython-39.pyc
 |   `-- trainvaltest.cpython-39.pyc
+|-- directory.txt
 |-- first_model
 |   |-- model1.py
 |   |-- model1_notebook.ipynb
-|   `-- the_first_war.h5
+|   |-- the_first_war.h5
+|   `-- the_first_war.png
+|-- preprocess.py
 |-- testing
 |   `-- testing.py
 |-- trainvaltest.py
 `-- trainvaltest_delete.py
 
-108 directories, 14 files
-```
+108 directories, 22 files
