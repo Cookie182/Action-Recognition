@@ -145,3 +145,7 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 108 directories, 22 files
 ```
+
+## my_VGG19.py model strucuture:
+![my_VGG16](https://user-images.githubusercontent.com/70320210/127281198-a9218078-606c-4dbf-a109-312b7219751c.png)
+
