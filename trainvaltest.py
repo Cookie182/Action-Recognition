@@ -128,7 +128,8 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
     """
 
     D_TYPE = tf.float64
-    print("\nTrain:")
+    print("Preparing Train/Val/Test generators:")
+    print("Creating training data generator...")
     train_datagen = ImageDataGenerator(data_format='channels_last',
                                        validation_split=0.2,
                                        dtype=D_TYPE)
@@ -141,7 +142,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                         shuffle=True,
                                                         target_size=IMG_SIZE,
                                                         seed=SEED)
-    print("Validation:")
+    print("Creating validation data generator...")
     validation_generator = train_datagen.flow_from_directory(train_path,
                                                              batch_size=BATCH_SIZE,
                                                              color_mode='rgb',
@@ -151,7 +152,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                              target_size=IMG_SIZE,
                                                              seed=SEED)
 
-    print("Test:")
+    print("Creating testing data generator...")
     test_datagen = ImageDataGenerator(data_format='channels_last',
                                       dtype=D_TYPE)
 

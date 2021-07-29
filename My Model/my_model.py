@@ -2,17 +2,15 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # nopep8
 os.environ["TF_ENABLE_AUTO_MIXED_PRECISION"] = '1'
 
-FILE_PATH = os.path.realpath(__file__)
+FILE_PATH = os.path.abspath(__file__)
 import sys
 sys.path.append('\\'.join(FILE_PATH.split('\\')[:3]))
-import argparse
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import sys
 sys.path.append("../")
-import pandas as pd
-from matplotlib import pyplot as plt
+from evaluatemodel import evaluatemodel
 from trainvaltest import trainvaltest
 import preprocess
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
@@ -22,7 +20,6 @@ MODEL_PATH = os.path.join("\\".join(FILE_PATH.split("\\")[:-1]), f"{MODEL_NAME}.
 BATCH_SIZE = 16
 LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
 EPOCHS = 20
-VERBOSE = 1
 
 
 def conv_layer(filters, kernel_size, padding, strides):
@@ -178,51 +175,12 @@ def create_model(inp_shape, n_labels, model_name):
 
 if __name__ == '__main__':
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
-
-    model_png_path = os.path.join(*FILE_PATH.split("\\")[3:-1], f"{MODEL_NAME}.png")
-    keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
-
-    earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
-    callbacks = [earlystopping]
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--save', help='save the model', action='store_true')
-    args = parser.parse_args()
-    if args.save:
-        model_png_path = os.join(*MODEL_PATH.split("\\")[:-1], f"{MODEL_PATH}".h5)
-        best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_png_path,
-                                                          monitor='val_acc',
-                                                          save_best_only=True,
-                                                          save_freq='epoch',
-                                                          verbose=VERBOSE)
-        callbacks.append(best_checkpoint)
-        print("\nModel IS being saved after every epoch!\n")
-    else:
-        print("\nModel is NOT being saved!\n")
-
-    keras.utils.plot_model(model, to_file=f"{MODEL_NAME}.png", show_shapes=True)
-
-    train = model.fit(Train_Data,
-                      epochs=EPOCHS,
-                      verbose=VERBOSE,
-                      steps_per_epoch=len(Train_Data) // BATCH_SIZE,
-                      callbacks=callbacks,
-                      validation_data=Val_Data,
-                      validation_steps=len(Val_Data) // BATCH_SIZE,
-                      use_multiprocessing=True,
-                      workers=-1)
-
-    test = model.evaluate(Test_Data, steps=len(Test_Data) // BATCH_SIZE, workers=-1, use_multiprocessing=True, verbose=VERBOSE)
-
-    train_history = pd.DataFrame(train.history)
-    plt.figure(figsize=(8, 6))
-    plt.title(f"Test stats:\nLoss: {test[0]} \nAcc: {test[1]}")
-    for label in train_history.keys():
-        plt.plot(train_history[label], label=label, linestyle='--' if label[:3] == 'val' else '-')
-    plt.xlabel('Epochs')
-    plt.legend()
-    plt.margins(x=0, y=0)
-    plt.tight_layout()
-    if args.save:
-        plt.savefig(os.path.join(*FILE_PATH.split("\\")[3:-1], f"{MODEL_NAME}_performance.png"))
-    plt.show()
+    evaluatemodel(model=model,
+                  filepath=FILE_PATH,
+                  modelname=MODEL_NAME,
+                  modelpath=MODEL_PATH,
+                  train_gen=Train_Data,
+                  val_gen=Val_Data,
+                  test_gen=Test_Data,
+                  batchsize=BATCH_SIZE,
+                  epochs=EPOCHS)
