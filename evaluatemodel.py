@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 import argparse
 
 
-def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, test_gen, batchsize, epochs, verbose=1):
+def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batchsize, epochs, verbose=1):
     """train and evaluate model then display the results, also save, optionally, performance metrics graphs and model structure
 
     Args:
@@ -26,10 +26,13 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
     parser = argparse.ArgumentParser()
     parser.add_argument('--save', help='save the model', action='store_true')
     args = parser.parse_args()
+    dir_path = os.path.join(*filepath.split("\\")[-2:-1])
     if args.save:
-        model_png_path = os.path.join(*filepath.split("\\")[-2:-1], f"{modelname}.png")
+        model_png_path = os.path.join(dir_path, f"{modelname}.png")
         keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
-        best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=modelpath,
+
+        model_save_path = os.path.join(dir_path, f"{modelname}.h5")
+        best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_save_path,
                                                           monitor='val_acc',
                                                           save_best_only=True,
                                                           save_freq='epoch',
@@ -39,18 +42,23 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
     else:
         print("\nModel is NOT being saved!\n")
 
+    print("Training model: ")
     train = model.fit(train_gen,
                       epochs=epochs,
                       verbose=verbose,
-                      steps_per_epoch=len(train_gen) // batchsize,
+                      #   steps_per_epoch=len(train_gen) // batchsize,
+                      steps_per_epoch=10,
                       callbacks=callbacks,
                       validation_data=val_gen,
-                      validation_steps=len(val_gen) // batchsize,
+                      #   validation_steps=len(val_gen) // batchsize,
+                      validation_steps=5,
                       use_multiprocessing=True,
                       workers=-1)
 
+    print("\nEvaluating Model: ")
     test = model.evaluate(test_gen,
-                          steps=len(test_gen) // batchsize,
+                          #   steps=len(test_gen) // batchsize,
+                          steps=10,
                           workers=-1, use_multiprocessing=True, verbose=verbose)
 
     train_history = pd.DataFrame(train.history)
@@ -63,7 +71,7 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
     plt.margins(x=0, y=0)
     plt.tight_layout()
     if args.save:
-        plt.savefig(os.path.join(*filepath.split("\\")[-2:-1], f"{modelname}_performance.png"))
+        plt.savefig(os.path.join(dir_path, f"{modelname}_performance.png"))
     plt.show()
 
-    return "\nThank you for using the script!"
+    print("\nThank you for using the script!")
