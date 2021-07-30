@@ -5,10 +5,8 @@ import pandas as pd
 from matplotlib import pyplot as plt
 import argparse
 
-VERBOSE = 1
 
-
-def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, test_gen, batchsize, epochs):
+def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, test_gen, batchsize, epochs, verbose=1):
     """train and evaluate model then display the results, also save, optionally, performance metrics graphs and model structure
 
     Args:
@@ -22,20 +20,20 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
         batchsize (int): batch size of training/validation data
         epochs (int): number of epochs to train model
     """
-    earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=VERBOSE)
+    earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=verbose)
     callbacks = [earlystopping]
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--save', help='save the model', action='store_true')
     args = parser.parse_args()
     if args.save:
-        model_png_path = os.path.join(*filepath.split("\\")[3:-1], f"{modelname}.png")
+        model_png_path = os.path.join(*filepath.split("\\")[-2:-1], f"{modelname}.png")
         keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
         best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=modelpath,
                                                           monitor='val_acc',
                                                           save_best_only=True,
                                                           save_freq='epoch',
-                                                          verbose=VERBOSE)
+                                                          verbose=verbose)
         callbacks.append(best_checkpoint)
         print("\nModel IS being saved after every epoch!\n")
     else:
@@ -43,7 +41,7 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
 
     train = model.fit(train_gen,
                       epochs=epochs,
-                      verbose=VERBOSE,
+                      verbose=verbose,
                       steps_per_epoch=len(train_gen) // batchsize,
                       callbacks=callbacks,
                       validation_data=val_gen,
@@ -51,7 +49,9 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
                       use_multiprocessing=True,
                       workers=-1)
 
-    test = model.evaluate(test_gen, steps=len(test_gen) // batchsize, workers=-1, use_multiprocessing=True, verbose=VERBOSE)
+    test = model.evaluate(test_gen,
+                          steps=len(test_gen) // batchsize,
+                          workers=-1, use_multiprocessing=True, verbose=verbose)
 
     train_history = pd.DataFrame(train.history)
     plt.figure(figsize=(8, 6))
@@ -63,7 +63,7 @@ def evaluatemodel(model, filepath, modelname, modelpath, train_gen, val_gen, tes
     plt.margins(x=0, y=0)
     plt.tight_layout()
     if args.save:
-        plt.savefig(os.path.join(*filepath.split("\\")[2:-1], f"{modelname}_performance.png"))
+        plt.savefig(os.path.join(*filepath.split("\\")[-2:-1], f"{modelname}_performance.png"))
     plt.show()
 
     return "\nThank you for using the script!"

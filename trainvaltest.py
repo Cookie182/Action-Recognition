@@ -115,7 +115,7 @@ else:
     print("\ntrain/test data already created\n")
 
 
-def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
+def trainvaltest(LABELS=LABELS, BATCH_SIZE=8, D_TYPE=tf.float64):
     """Split data into 3 splits (train/test/split) and return after split into batches and
 
     Args:
@@ -126,9 +126,6 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
     Returns:
         tuples: returns the amount of labels, input shape for input layer and generator for each dataset split (train, validation, test)
     """
-
-    D_TYPE = tf.float64
-    print("Preparing Train/Val/Test generators:")
     print("Creating training data generator...")
     train_datagen = ImageDataGenerator(data_format='channels_last',
                                        validation_split=0.2,
@@ -142,7 +139,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                         shuffle=True,
                                                         target_size=IMG_SIZE,
                                                         seed=SEED)
-    print("Creating validation data generator...")
+    print("\nCreating validation data generator...")
     validation_generator = train_datagen.flow_from_directory(train_path,
                                                              batch_size=BATCH_SIZE,
                                                              color_mode='rgb',
@@ -152,7 +149,7 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8):
                                                              target_size=IMG_SIZE,
                                                              seed=SEED)
 
-    print("Creating testing data generator...")
+    print("\nCreating testing data generator...")
     test_datagen = ImageDataGenerator(data_format='channels_last',
                                       dtype=D_TYPE)
 
