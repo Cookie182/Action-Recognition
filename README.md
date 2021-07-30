@@ -6,6 +6,8 @@ Comparing my model, [first_model](https://github.com/Cookie182/Action-Recognitio
 
 [trainvaltest_delete.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest_delete.py): Script to navigate to the TrainTest folder in the UCF-101 dataset created when the trainvaltest.py script is ran, and delete it's contents and the TrainTest folder.
 
+[evaluatemodel.py](https://github.com/Cookie182/Action-Recognition/blob/main/evaluatemodel.py): Script that trains and evaluates a model, gives an option (use '--save' when running a model script) to save the trained model and to save png image of the model performance and model structure.
+
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 
