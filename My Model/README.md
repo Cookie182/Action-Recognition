@@ -1,7 +1,9 @@
 ## my_model.py model structure:
 ![the_first_war](https://user-images.githubusercontent.com/70320210/127282958-a715d8d6-6f4c-4e79-8f82-736232047774.png)
 
-model training performance: |Epochs|loss             |acc                |val_loss         |val_acc            |
+## model training performance: 
+
+|Epochs|loss             |acc                |val_loss         |val_acc            |
 |------|-----------------|-------------------|-----------------|-------------------|
 |1     |4.172143459320068|0.08741496503353119|3.98536491394043 |0.09112149477005005|
 |2     |3.570662498474121|0.1515306085348129 |3.794181823730469|0.125              |
