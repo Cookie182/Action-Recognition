@@ -21,319 +21,318 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 **EACH MODEL RUNS FOR ENOUGH EPOCHS TO LET THE MODEL RUN FOR APPROX. 10 HOURS UNLESS EARLYSTOPPING KICKS IN**
 
 ## **DIRECTORY STRUCUTRE**
-```BASH
+```
 ├───Custom VGG16
 ├───Custom VGG19
 ├───My Model
 ├───testing
-├───UCF-101
-│   ├───ApplyEyeMakeup
-│   ├───ApplyLipstick
-│   ├───Archery
-│   ├───BabyCrawling
-│   ├───BalanceBeam
-│   ├───BandMarching
-│   ├───BaseballPitch
-│   ├───Basketball
-│   ├───BasketballDunk
-│   ├───BenchPress
-│   ├───Biking
-│   ├───Billiards
-│   ├───BlowDryHair
-│   ├───BlowingCandles
-│   ├───BodyWeightSquats
-│   ├───Bowling
-│   ├───BoxingPunchingBag
-│   ├───BoxingSpeedBag
-│   ├───BreastStroke
-│   ├───BrushingTeeth
-│   ├───CleanAndJerk
-│   ├───CliffDiving
-│   ├───CricketBowling
-│   ├───CricketShot
-│   ├───CuttingInKitchen
-│   ├───Diving
-│   ├───Drumming
-│   ├───Fencing
-│   ├───FieldHockeyPenalty
-│   ├───FloorGymnastics
-│   ├───FrisbeeCatch
-│   ├───FrontCrawl
-│   ├───GolfSwing
-│   ├───Haircut
-│   ├───Hammering
-│   ├───HammerThrow
-│   ├───HandstandPushups
-│   ├───HandstandWalking
-│   ├───HeadMassage
-│   ├───HighJump
-│   ├───HorseRace
-│   ├───HorseRiding
-│   ├───HulaHoop
-│   ├───IceDancing
-│   ├───JavelinThrow
-│   ├───JugglingBalls
-│   ├───JumpingJack
-│   ├───JumpRope
-│   ├───Kayaking
-│   ├───Knitting
-│   ├───LongJump
-│   ├───Lunges
-│   ├───MilitaryParade
-│   ├───Mixing
-│   ├───MoppingFloor
-│   ├───Nunchucks
-│   ├───ParallelBars
-│   ├───PizzaTossing
-│   ├───PlayingCello
-│   ├───PlayingDaf
-│   ├───PlayingDhol
-│   ├───PlayingFlute
-│   ├───PlayingGuitar
-│   ├───PlayingPiano
-│   ├───PlayingSitar
-│   ├───PlayingTabla
-│   ├───PlayingViolin
-│   ├───PoleVault
-│   ├───PommelHorse
-│   ├───PullUps
-│   ├───Punch
-│   ├───PushUps
-│   ├───Rafting
-│   ├───RockClimbingIndoor
-│   ├───RopeClimbing
-│   ├───Rowing
-│   ├───SalsaSpin
-│   ├───ShavingBeard
-│   ├───Shotput
-│   ├───SkateBoarding
-│   ├───Skiing
-│   ├───Skijet
-│   ├───SkyDiving
-│   ├───SoccerJuggling
-│   ├───SoccerPenalty
-│   ├───StillRings
-│   ├───SumoWrestling
-│   ├───Surfing
-│   ├───Swing
-│   ├───TableTennisShot
-│   ├───TaiChi
-│   ├───TennisSwing
-│   ├───ThrowDiscus
-│   ├───TrainTest
-│   │   ├───Test
-│   │   │   ├───ApplyEyeMakeup
-│   │   │   ├───ApplyLipstick
-│   │   │   ├───Archery
-│   │   │   ├───BabyCrawling
-│   │   │   ├───BalanceBeam
-│   │   │   ├───BandMarching
-│   │   │   ├───BaseballPitch
-│   │   │   ├───Basketball
-│   │   │   ├───BasketballDunk
-│   │   │   ├───BenchPress
-│   │   │   ├───Biking
-│   │   │   ├───Billiards
-│   │   │   ├───BlowDryHair
-│   │   │   ├───BlowingCandles
-│   │   │   ├───BodyWeightSquats
-│   │   │   ├───Bowling
-│   │   │   ├───BoxingPunchingBag
-│   │   │   ├───BoxingSpeedBag
-│   │   │   ├───BreastStroke
-│   │   │   ├───BrushingTeeth
-│   │   │   ├───CleanAndJerk
-│   │   │   ├───CliffDiving
-│   │   │   ├───CricketBowling
-│   │   │   ├───CricketShot
-│   │   │   ├───CuttingInKitchen
-│   │   │   ├───Diving
-│   │   │   ├───Drumming
-│   │   │   ├───Fencing
-│   │   │   ├───FieldHockeyPenalty
-│   │   │   ├───FloorGymnastics
-│   │   │   ├───FrisbeeCatch
-│   │   │   ├───FrontCrawl
-│   │   │   ├───GolfSwing
-│   │   │   ├───Haircut
-│   │   │   ├───Hammering
-│   │   │   ├───HammerThrow
-│   │   │   ├───HandstandPushups
-│   │   │   ├───HandstandWalking
-│   │   │   ├───HeadMassage
-│   │   │   ├───HighJump
-│   │   │   ├───HorseRace
-│   │   │   ├───HorseRiding
-│   │   │   ├───HulaHoop
-│   │   │   ├───IceDancing
-│   │   │   ├───JavelinThrow
-│   │   │   ├───JugglingBalls
-│   │   │   ├───JumpingJack
-│   │   │   ├───JumpRope
-│   │   │   ├───Kayaking
-│   │   │   ├───Knitting
-│   │   │   ├───LongJump
-│   │   │   ├───Lunges
-│   │   │   ├───MilitaryParade
-│   │   │   ├───Mixing
-│   │   │   ├───MoppingFloor
-│   │   │   ├───Nunchucks
-│   │   │   ├───ParallelBars
-│   │   │   ├───PizzaTossing
-│   │   │   ├───PlayingCello
-│   │   │   ├───PlayingDaf
-│   │   │   ├───PlayingDhol
-│   │   │   ├───PlayingFlute
-│   │   │   ├───PlayingGuitar
-│   │   │   ├───PlayingPiano
-│   │   │   ├───PlayingSitar
-│   │   │   ├───PlayingTabla
-│   │   │   ├───PlayingViolin
-│   │   │   ├───PoleVault
-│   │   │   ├───PommelHorse
-│   │   │   ├───PullUps
-│   │   │   ├───Punch
-│   │   │   ├───PushUps
-│   │   │   ├───Rafting
-│   │   │   ├───RockClimbingIndoor
-│   │   │   ├───RopeClimbing
-│   │   │   ├───Rowing
-│   │   │   ├───SalsaSpin
-│   │   │   ├───ShavingBeard
-│   │   │   ├───Shotput
-│   │   │   ├───SkateBoarding
-│   │   │   ├───Skiing
-│   │   │   ├───Skijet
-│   │   │   ├───SkyDiving
-│   │   │   ├───SoccerJuggling
-│   │   │   ├───SoccerPenalty
-│   │   │   ├───StillRings
-│   │   │   ├───SumoWrestling
-│   │   │   ├───Surfing
-│   │   │   ├───Swing
-│   │   │   ├───TableTennisShot
-│   │   │   ├───TaiChi
-│   │   │   ├───TennisSwing
-│   │   │   ├───ThrowDiscus
-│   │   │   ├───TrampolineJumping
-│   │   │   ├───Typing
-│   │   │   ├───UnevenBars
-│   │   │   ├───VolleyballSpiking
-│   │   │   ├───WalkingWithDog
-│   │   │   ├───WallPushups
-│   │   │   ├───WritingOnBoard
-│   │   │   └───YoYo
-│   │   └───Train
-│   │       ├───ApplyEyeMakeup
-│   │       ├───ApplyLipstick
-│   │       ├───Archery
-│   │       ├───BabyCrawling
-│   │       ├───BalanceBeam
-│   │       ├───BandMarching
-│   │       ├───BaseballPitch
-│   │       ├───Basketball
-│   │       ├───BasketballDunk
-│   │       ├───BenchPress
-│   │       ├───Biking
-│   │       ├───Billiards
-│   │       ├───BlowDryHair
-│   │       ├───BlowingCandles
-│   │       ├───BodyWeightSquats
-│   │       ├───Bowling
-│   │       ├───BoxingPunchingBag
-│   │       ├───BoxingSpeedBag
-│   │       ├───BreastStroke
-│   │       ├───BrushingTeeth
-│   │       ├───CleanAndJerk
-│   │       ├───CliffDiving
-│   │       ├───CricketBowling
-│   │       ├───CricketShot
-│   │       ├───CuttingInKitchen
-│   │       ├───Diving
-│   │       ├───Drumming
-│   │       ├───Fencing
-│   │       ├───FieldHockeyPenalty
-│   │       ├───FloorGymnastics
-│   │       ├───FrisbeeCatch
-│   │       ├───FrontCrawl
-│   │       ├───GolfSwing
-│   │       ├───Haircut
-│   │       ├───Hammering
-│   │       ├───HammerThrow
-│   │       ├───HandstandPushups
-│   │       ├───HandstandWalking
-│   │       ├───HeadMassage
-│   │       ├───HighJump
-│   │       ├───HorseRace
-│   │       ├───HorseRiding
-│   │       ├───HulaHoop
-│   │       ├───IceDancing
-│   │       ├───JavelinThrow
-│   │       ├───JugglingBalls
-│   │       ├───JumpingJack
-│   │       ├───JumpRope
-│   │       ├───Kayaking
-│   │       ├───Knitting
-│   │       ├───LongJump
-│   │       ├───Lunges
-│   │       ├───MilitaryParade
-│   │       ├───Mixing
-│   │       ├───MoppingFloor
-│   │       ├───Nunchucks
-│   │       ├───ParallelBars
-│   │       ├───PizzaTossing
-│   │       ├───PlayingCello
-│   │       ├───PlayingDaf
-│   │       ├───PlayingDhol
-│   │       ├───PlayingFlute
-│   │       ├───PlayingGuitar
-│   │       ├───PlayingPiano
-│   │       ├───PlayingSitar
-│   │       ├───PlayingTabla
-│   │       ├───PlayingViolin
-│   │       ├───PoleVault
-│   │       ├───PommelHorse
-│   │       ├───PullUps
-│   │       ├───Punch
-│   │       ├───PushUps
-│   │       ├───Rafting
-│   │       ├───RockClimbingIndoor
-│   │       ├───RopeClimbing
-│   │       ├───Rowing
-│   │       ├───SalsaSpin
-│   │       ├───ShavingBeard
-│   │       ├───Shotput
-│   │       ├───SkateBoarding
-│   │       ├───Skiing
-│   │       ├───Skijet
-│   │       ├───SkyDiving
-│   │       ├───SoccerJuggling
-│   │       ├───SoccerPenalty
-│   │       ├───StillRings
-│   │       ├───SumoWrestling
-│   │       ├───Surfing
-│   │       ├───Swing
-│   │       ├───TableTennisShot
-│   │       ├───TaiChi
-│   │       ├───TennisSwing
-│   │       ├───ThrowDiscus
-│   │       ├───TrampolineJumping
-│   │       ├───Typing
-│   │       ├───UnevenBars
-│   │       ├───VolleyballSpiking
-│   │       ├───WalkingWithDog
-│   │       ├───WallPushups
-│   │       ├───WritingOnBoard
-│   │       └───YoYo
-│   ├───TrampolineJumping
-│   ├───Typing
-│   ├───UnevenBars
-│   ├───VolleyballSpiking
-│   ├───WalkingWithDog
-│   ├───WallPushups
-│   ├───WritingOnBoard
-│   └───YoYo
-└───__pycache__
+└───UCF-101
+    ├───ApplyEyeMakeup
+    ├───ApplyLipstick
+    ├───Archery
+    ├───BabyCrawling
+    ├───BalanceBeam
+    ├───BandMarching
+    ├───BaseballPitch
+    ├───Basketball
+    ├───BasketballDunk
+    ├───BenchPress
+    ├───Biking
+    ├───Billiards
+    ├───BlowDryHair
+    ├───BlowingCandles
+    ├───BodyWeightSquats
+    ├───Bowling
+    ├───BoxingPunchingBag
+    ├───BoxingSpeedBag
+    ├───BreastStroke
+    ├───BrushingTeeth
+    ├───CleanAndJerk
+    ├───CliffDiving
+    ├───CricketBowling
+    ├───CricketShot
+    ├───CuttingInKitchen
+    ├───Diving
+    ├───Drumming
+    ├───Fencing
+    ├───FieldHockeyPenalty
+    ├───FloorGymnastics
+    ├───FrisbeeCatch
+    ├───FrontCrawl
+    ├───GolfSwing
+    ├───Haircut
+    ├───Hammering
+    ├───HammerThrow
+    ├───HandstandPushups
+    ├───HandstandWalking
+    ├───HeadMassage
+    ├───HighJump
+    ├───HorseRace
+    ├───HorseRiding
+    ├───HulaHoop
+    ├───IceDancing
+    ├───JavelinThrow
+    ├───JugglingBalls
+    ├───JumpingJack
+    ├───JumpRope
+    ├───Kayaking
+    ├───Knitting
+    ├───LongJump
+    ├───Lunges
+    ├───MilitaryParade
+    ├───Mixing
+    ├───MoppingFloor
+    ├───Nunchucks
+    ├───ParallelBars
+    ├───PizzaTossing
+    ├───PlayingCello
+    ├───PlayingDaf
+    ├───PlayingDhol
+    ├───PlayingFlute
+    ├───PlayingGuitar
+    ├───PlayingPiano
+    ├───PlayingSitar
+    ├───PlayingTabla
+    ├───PlayingViolin
+    ├───PoleVault
+    ├───PommelHorse
+    ├───PullUps
+    ├───Punch
+    ├───PushUps
+    ├───Rafting
+    ├───RockClimbingIndoor
+    ├───RopeClimbing
+    ├───Rowing
+    ├───SalsaSpin
+    ├───ShavingBeard
+    ├───Shotput
+    ├───SkateBoarding
+    ├───Skiing
+    ├───Skijet
+    ├───SkyDiving
+    ├───SoccerJuggling
+    ├───SoccerPenalty
+    ├───StillRings
+    ├───SumoWrestling
+    ├───Surfing
+    ├───Swing
+    ├───TableTennisShot
+    ├───TaiChi
+    ├───TennisSwing
+    ├───ThrowDiscus
+    ├───TrainTest
+    │   ├───Test
+    │   │   ├───ApplyEyeMakeup
+    │   │   ├───ApplyLipstick
+    │   │   ├───Archery
+    │   │   ├───BabyCrawling
+    │   │   ├───BalanceBeam
+    │   │   ├───BandMarching
+    │   │   ├───BaseballPitch
+    │   │   ├───Basketball
+    │   │   ├───BasketballDunk
+    │   │   ├───BenchPress
+    │   │   ├───Biking
+    │   │   ├───Billiards
+    │   │   ├───BlowDryHair
+    │   │   ├───BlowingCandles
+    │   │   ├───BodyWeightSquats
+    │   │   ├───Bowling
+    │   │   ├───BoxingPunchingBag
+    │   │   ├───BoxingSpeedBag
+    │   │   ├───BreastStroke
+    │   │   ├───BrushingTeeth
+    │   │   ├───CleanAndJerk
+    │   │   ├───CliffDiving
+    │   │   ├───CricketBowling
+    │   │   ├───CricketShot
+    │   │   ├───CuttingInKitchen
+    │   │   ├───Diving
+    │   │   ├───Drumming
+    │   │   ├───Fencing
+    │   │   ├───FieldHockeyPenalty
+    │   │   ├───FloorGymnastics
+    │   │   ├───FrisbeeCatch
+    │   │   ├───FrontCrawl
+    │   │   ├───GolfSwing
+    │   │   ├───Haircut
+    │   │   ├───Hammering
+    │   │   ├───HammerThrow
+    │   │   ├───HandstandPushups
+    │   │   ├───HandstandWalking
+    │   │   ├───HeadMassage
+    │   │   ├───HighJump
+    │   │   ├───HorseRace
+    │   │   ├───HorseRiding
+    │   │   ├───HulaHoop
+    │   │   ├───IceDancing
+    │   │   ├───JavelinThrow
+    │   │   ├───JugglingBalls
+    │   │   ├───JumpingJack
+    │   │   ├───JumpRope
+    │   │   ├───Kayaking
+    │   │   ├───Knitting
+    │   │   ├───LongJump
+    │   │   ├───Lunges
+    │   │   ├───MilitaryParade
+    │   │   ├───Mixing
+    │   │   ├───MoppingFloor
+    │   │   ├───Nunchucks
+    │   │   ├───ParallelBars
+    │   │   ├───PizzaTossing
+    │   │   ├───PlayingCello
+    │   │   ├───PlayingDaf
+    │   │   ├───PlayingDhol
+    │   │   ├───PlayingFlute
+    │   │   ├───PlayingGuitar
+    │   │   ├───PlayingPiano
+    │   │   ├───PlayingSitar
+    │   │   ├───PlayingTabla
+    │   │   ├───PlayingViolin
+    │   │   ├───PoleVault
+    │   │   ├───PommelHorse
+    │   │   ├───PullUps
+    │   │   ├───Punch
+    │   │   ├───PushUps
+    │   │   ├───Rafting
+    │   │   ├───RockClimbingIndoor
+    │   │   ├───RopeClimbing
+    │   │   ├───Rowing
+    │   │   ├───SalsaSpin
+    │   │   ├───ShavingBeard
+    │   │   ├───Shotput
+    │   │   ├───SkateBoarding
+    │   │   ├───Skiing
+    │   │   ├───Skijet
+    │   │   ├───SkyDiving
+    │   │   ├───SoccerJuggling
+    │   │   ├───SoccerPenalty
+    │   │   ├───StillRings
+    │   │   ├───SumoWrestling
+    │   │   ├───Surfing
+    │   │   ├───Swing
+    │   │   ├───TableTennisShot
+    │   │   ├───TaiChi
+    │   │   ├───TennisSwing
+    │   │   ├───ThrowDiscus
+    │   │   ├───TrampolineJumping
+    │   │   ├───Typing
+    │   │   ├───UnevenBars
+    │   │   ├───VolleyballSpiking
+    │   │   ├───WalkingWithDog
+    │   │   ├───WallPushups
+    │   │   ├───WritingOnBoard
+    │   │   └───YoYo
+    │   └───Train
+    │       ├───ApplyEyeMakeup
+    │       ├───ApplyLipstick
+    │       ├───Archery
+    │       ├───BabyCrawling
+    │       ├───BalanceBeam
+    │       ├───BandMarching
+    │       ├───BaseballPitch
+    │       ├───Basketball
+    │       ├───BasketballDunk
+    │       ├───BenchPress
+    │       ├───Biking
+    │       ├───Billiards
+    │       ├───BlowDryHair
+    │       ├───BlowingCandles
+    │       ├───BodyWeightSquats
+    │       ├───Bowling
+    │       ├───BoxingPunchingBag
+    │       ├───BoxingSpeedBag
+    │       ├───BreastStroke
+    │       ├───BrushingTeeth
+    │       ├───CleanAndJerk
+    │       ├───CliffDiving
+    │       ├───CricketBowling
+    │       ├───CricketShot
+    │       ├───CuttingInKitchen
+    │       ├───Diving
+    │       ├───Drumming
+    │       ├───Fencing
+    │       ├───FieldHockeyPenalty
+    │       ├───FloorGymnastics
+    │       ├───FrisbeeCatch
+    │       ├───FrontCrawl
+    │       ├───GolfSwing
+    │       ├───Haircut
+    │       ├───Hammering
+    │       ├───HammerThrow
+    │       ├───HandstandPushups
+    │       ├───HandstandWalking
+    │       ├───HeadMassage
+    │       ├───HighJump
+    │       ├───HorseRace
+    │       ├───HorseRiding
+    │       ├───HulaHoop
+    │       ├───IceDancing
+    │       ├───JavelinThrow
+    │       ├───JugglingBalls
+    │       ├───JumpingJack
+    │       ├───JumpRope
+    │       ├───Kayaking
+    │       ├───Knitting
+    │       ├───LongJump
+    │       ├───Lunges
+    │       ├───MilitaryParade
+    │       ├───Mixing
+    │       ├───MoppingFloor
+    │       ├───Nunchucks
+    │       ├───ParallelBars
+    │       ├───PizzaTossing
+    │       ├───PlayingCello
+    │       ├───PlayingDaf
+    │       ├───PlayingDhol
+    │       ├───PlayingFlute
+    │       ├───PlayingGuitar
+    │       ├───PlayingPiano
+    │       ├───PlayingSitar
+    │       ├───PlayingTabla
+    │       ├───PlayingViolin
+    │       ├───PoleVault
+    │       ├───PommelHorse
+    │       ├───PullUps
+    │       ├───Punch
+    │       ├───PushUps
+    │       ├───Rafting
+    │       ├───RockClimbingIndoor
+    │       ├───RopeClimbing
+    │       ├───Rowing
+    │       ├───SalsaSpin
+    │       ├───ShavingBeard
+    │       ├───Shotput
+    │       ├───SkateBoarding
+    │       ├───Skiing
+    │       ├───Skijet
+    │       ├───SkyDiving
+    │       ├───SoccerJuggling
+    │       ├───SoccerPenalty
+    │       ├───StillRings
+    │       ├───SumoWrestling
+    │       ├───Surfing
+    │       ├───Swing
+    │       ├───TableTennisShot
+    │       ├───TaiChi
+    │       ├───TennisSwing
+    │       ├───ThrowDiscus
+    │       ├───TrampolineJumping
+    │       ├───Typing
+    │       ├───UnevenBars
+    │       ├───VolleyballSpiking
+    │       ├───WalkingWithDog
+    │       ├───WallPushups
+    │       ├───WritingOnBoard
+    │       └───YoYo
+    ├───TrampolineJumping
+    ├───Typing
+    ├───UnevenBars
+    ├───VolleyballSpiking
+    ├───WalkingWithDog
+    ├───WallPushups
+    ├───WritingOnBoard
+    └───YoYo
 ```
 
 *SEED VALUE TO BE USED IN ALL APPLICABLE INSTANCES: 182*
