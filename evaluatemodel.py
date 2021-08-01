@@ -68,6 +68,8 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
     plt.margins(x=0, y=0)
     plt.tight_layout()
     if save:
+        for column in train_history.columns:
+            train_history[column] = [round(x, 5) for x in train_history[column]]
         train_history.insert(0, 'Epochs', range(1, len(train_history) + 1))
         plt.savefig(os.path.join(dir_path, f"{modelname}_training_performance.png"))
         train_history.to_csv(os.path.join(dir_path, f"{modelname}_training_performance.txt"), header=train_history.columns, index=None)
