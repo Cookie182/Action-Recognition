@@ -45,19 +45,16 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
     train = model.fit(train_gen,
                       epochs=2,
                       verbose=verbose,
-                      #   steps_per_epoch=len(train_gen) // batchsize,
-                      steps_per_epoch=10,
+                      steps_per_epoch=len(train_gen) // batchsize,
                       callbacks=callbacks,
                       validation_data=val_gen,
-                      #   validation_steps=len(val_gen) // batchsize,
-                      validation_steps=5,
+                      validation_steps=len(val_gen) // batchsize,
                       use_multiprocessing=True,
                       workers=-1)
 
     print("\nEvaluating Model: ")
     test = model.evaluate(test_gen,
-                          #   steps=len(test_gen) // batchsize,
-                          steps=10,
+                          steps=len(test_gen) // batchsize,
                           workers=-1, use_multiprocessing=True, verbose=verbose)
 
     train_history = pd.DataFrame(train.history)
@@ -71,7 +68,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
     plt.margins(x=0, y=0)
     plt.tight_layout()
     if save:
-        train_history.insert(0, 'Epochs', range(1, len(train_history)+1))
+        train_history.insert(0, 'Epochs', range(1, len(train_history) + 1))
         plt.savefig(os.path.join(dir_path, f"{modelname}_training_performance.png"))
         train_history.to_csv(os.path.join(dir_path, f"{modelname}_training_performance.txt"), header=train_history.columns, index=None)
 
