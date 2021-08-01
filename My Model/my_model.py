@@ -150,7 +150,6 @@ def create_model(inp_shape, n_labels, model_name):
         inp_shape (tuple(int)): tuple of ints, input shape
         n_labels (int): number of labels for last layer
         model_name (str): name of model
-        layer_names (list(str)): list of names for each layer in model
 
     Returns:
         model: named and configured model with input/output and named layers

@@ -12,6 +12,7 @@ class PreprocessingLayers(layers.Layer):
         Args:
             factor (float, optional): factor to set for rotation, brightness, zoom and image shifting. Defaults to 0.2.
             scale (float, optional): float to multiple all features by and normalize tensorflow. Defaults to 1.0/255.0.
+            flipmode (str, optional): whether to apply horizontal, vertical or both flips. Defaults to horizontal.
             seed (int, optional): set the seed value for all preprocessing layers. Defaults to 182
         """
         super(PreprocessingLayers, self).__init__()
