@@ -10,7 +10,7 @@ Comparing my model, [My Model](https://github.com/Cookie182/Action-Recognition/t
   * Applies random contrast to data
   * Applies random (horizontal) flipping to data
 
-[trainvaltest.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest.py): A script to navigate to the UCF-101 dataset and extract every nth frame from a video and store it in a **Train** and **Test** folder to be used for the aforementioned purposes with a model. This script also prepares training, validation and test data generators from the directory to be used when training and evaluating models. All scripts and notebooks of models call upon this script initially. 
+[trainvaltest.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest.py): A script to navigate to the UCF-101 dataset and extract every nth frame from a video and store it in a **Train** and **Test** folder to be used for the aforementioned purposes with a model. This script also prepares training, validation and test data generators from the directory to be used when training and evaluating models. All scripts of models call upon this script initially. 
 
 [trainvaltest_delete.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest_delete.py): Script to navigate to the TrainTest folder in the UCF-101 dataset created when the trainvaltest.py script is ran, and delete it's contents and the TrainTest folder.
 
