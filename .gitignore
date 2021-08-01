@@ -5,3 +5,4 @@ __pycache__
 *.png
 directory.txt
 testing
+*.pyc
