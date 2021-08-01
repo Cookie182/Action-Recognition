@@ -3,10 +3,9 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # nopep8
 from tensorflow import keras
 import pandas as pd
 from matplotlib import pyplot as plt
-import argparse
 
 
-def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batchsize, epochs, verbose=1):
+def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batchsize, epochs, patience=3, verbose=1, save=False):
     """train and evaluate model then display the results, also save, optionally, performance metrics graphs and model structure
 
     Args:
@@ -19,21 +18,21 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
         test_gen (tensorflow data generator): test data generator
         batchsize (int): batch size of training/validation data
         epochs (int): number of epochs to train model
+        patience (int): number of epochs to wait and see if monitored value improves during training. Defaults to 3.
+        verbose (int): verbosity levels for certain functions. Defaults to 2.
+        save (bool): whether to save the model, and its training performance metrics. Defaults to False.
     """
-    earlystopping = keras.callbacks.EarlyStopping(monitor='val_acc', patience=3, verbose=verbose)
+    earlystopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=verbose)
     callbacks = [earlystopping]
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--save', help='save the model', action='store_true')
-    args = parser.parse_args()
     dir_path = os.path.join(*filepath.split("\\")[-2:-1])
-    if args.save:
-        model_png_path = os.path.join(dir_path, f"{modelname}.png")
+    if save:
+        model_png_path = os.path.join(dir_path, f"{modelname}_structure.png")
         keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
 
         model_save_path = os.path.join(dir_path, f"{modelname}.h5")
         best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_save_path,
-                                                          monitor='val_acc',
+                                                          monitor='val_loss',
                                                           save_best_only=True,
                                                           save_freq='epoch',
                                                           verbose=verbose)
@@ -44,7 +43,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
 
     print("Training model: ")
     train = model.fit(train_gen,
-                      epochs=epochs,
+                      epochs=2,
                       verbose=verbose,
                       #   steps_per_epoch=len(train_gen) // batchsize,
                       steps_per_epoch=10,
@@ -62,16 +61,19 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
                           workers=-1, use_multiprocessing=True, verbose=verbose)
 
     train_history = pd.DataFrame(train.history)
+
     plt.figure(figsize=(8, 6))
-    plt.title(f"Test stats:\nLoss: {test[0]} \nAcc: {test[1]}")
+    plt.title(f"Test stats:\nLoss: {round(test[0], 4)} \nAcc: {round(test[1], 4)}")
     for label in train_history.keys():
         plt.plot(train_history[label], label=label, linestyle='--' if label[:3] == 'val' else '-')
     plt.xlabel('Epochs')
     plt.legend()
     plt.margins(x=0, y=0)
     plt.tight_layout()
-    if args.save:
-        plt.savefig(os.path.join(dir_path, f"{modelname}_performance.png"))
-    plt.show()
+    if save:
+        train_history.insert(0, 'Epochs', range(1, len(train_history)+1))
+        plt.savefig(os.path.join(dir_path, f"{modelname}_training_performance.png"))
+        train_history.to_csv(os.path.join(dir_path, f"{modelname}_training_performance.txt"), header=train_history.columns, index=None)
 
+    plt.show()
     print("\nThank you for using the script!")

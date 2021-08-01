@@ -2,23 +2,16 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'  # nopep8
 os.environ["TF_ENABLE_AUTO_MIXED_PRECISION"] = '1'
 
-FILE_PATH = os.path.realpath(__file__)
+FILE_PATH = os.path.abspath(__file__)
 import sys
-sys.path.append('\\'.join(FILE_PATH.split('\\')[:3]))
+sys.path.append('\\'.join(FILE_PATH.split('\\')[:-2]))
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 import preprocess
 from evaluatemodel import evaluatemodel
 from trainvaltest import trainvaltest
-
 tf.config.experimental.set_memory_growth(tf.config.list_physical_devices('GPU')[0], True)
-
-MODEL_NAME = "my_VGG16"
-BATCH_SIZE = 16
-LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-EPOCHS = 20
-VERBOSE = 1
 
 
 class CNNBlock(layers.Layer):
@@ -158,6 +151,11 @@ def create_model(inp_shape, n_labels, model_name):
 
 
 if __name__ == '__main__':
+    MODEL_NAME = "my_VGG16"
+    BATCH_SIZE = 16
+    LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data, save = trainvaltest(BATCH_SIZE=BATCH_SIZE)
+    EPOCHS = 20
+
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
     evaluatemodel(model=model,
                   filepath=FILE_PATH,
@@ -166,4 +164,5 @@ if __name__ == '__main__':
                   val_gen=Val_Data,
                   test_gen=Test_Data,
                   batchsize=BATCH_SIZE,
-                  epochs=EPOCHS)
+                  epochs=EPOCHS,
+                  save=save)
