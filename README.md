@@ -1,15 +1,24 @@
 ## Action-Recognition
-**University Summer Internship**
-Comparing my model, [My Model](https://github.com/Cookie182/Action-Recognition/tree/main/My%20Model) with the performance of [VGG16](https://github.com/Cookie182/Action-Recognition/tree/main/Custom%20VGG16) and [VGG19](https://github.com/Cookie182/Action-Recognition/tree/main/Custom%20VGG19), currently. More models will be created and first_model will be updated as more models are created to compare performance metrics with. 
+***University Summer Internship***
+Comparing my model, [My Model](https://github.com/Cookie182/Action-Recognition/tree/main/My%20Model) with the performance of [VGG16](https://github.com/Cookie182/Action-Recognition/tree/main/Custom%20VGG16) and [VGG19](https://github.com/Cookie182/Action-Recognition/tree/main/Custom%20VGG19), currently. More models may be added later on and thus, based on their performance, My Model may be updated later on.
+
+[preprocess.py](https://github.com/Cookie182/Action-Recognition/blob/main/preprocess.py): A script that stores the preprocessing layers that all the models will use as the first layer. Contains layers that:
+  * Rescales the values
+  * Applies random rotation to data
+  * Applies random zoom to data
+  * Applies random translation to data
+  * Applies random contrast to data
+  * Applies random (horizontal) flipping to data
 
 [trainvaltest.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest.py): A script to navigate to the UCF-101 dataset and extract every nth frame from a video and store it in a **Train** and **Test** folder to be used for the aforementioned purposes with a model. This script also prepares training, validation and test data generators from the directory to be used when training and evaluating models. All scripts and notebooks of models call upon this script initially. 
 
 [trainvaltest_delete.py](https://github.com/Cookie182/Action-Recognition/blob/main/trainvaltest_delete.py): Script to navigate to the TrainTest folder in the UCF-101 dataset created when the trainvaltest.py script is ran, and delete it's contents and the TrainTest folder.
 
-[evaluatemodel.py](https://github.com/Cookie182/Action-Recognition/blob/main/evaluatemodel.py): Script that trains and evaluates a model, gives an option (use '--save' when running a model script) to save the trained model and to save png image of the model performance and model structure.
+[evaluatemodel.py](https://github.com/Cookie182/Action-Recognition/blob/main/evaluatemodel.py): Script that trains and evaluates a model, gives an option (use '--save' when running a model script) to save the trained model, to save png image of the model performance, model structure and a .csv file that documents the accuracy and loss for training and validation sets when the model is being trained.
 
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
+**EACH MODEL RUNS FOR ENOUGH EPOCHS TO LET THE MODEL RUN FOR APPROX. 10 HOURS UNLESS EARLYSTOPPING KICKS IN**
 
 ## **DIRECTORY STRUCUTRE**
 ```BASH
@@ -147,3 +156,5 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 108 directories, 22 files
 ```
+
+*SEED VALUE TO BE USED IN ALL APPLICABLE INSTANCES IS 182*
