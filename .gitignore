@@ -1,12 +1,7 @@
-*.pb
-*.data-00000-of-00001
-*.index
 UCF-101
 UCF11_updated_mpg
-*.ipynb_checkpoints
-__pycache__/trainvaltest.cpython-39.pyc
 *.h5
-testing/
+__pycache__
 *.png
-*.pyc
 directory.txt
+testing
