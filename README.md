@@ -10,6 +10,7 @@ Comparing my model, [My Model](https://github.com/Cookie182/Action-Recognition/t
 
 Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
+**EACH MODEL RUNS FOR ENOUGH EPOCHS TO LET THE MODEL RUN FOR APPROX. 10 HOURS UNLESS EARLYSTOPPING KICKS IN**
 
 ## **DIRECTORY STRUCUTRE**
 ```BASH
