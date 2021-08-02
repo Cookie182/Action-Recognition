@@ -32,7 +32,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
 
         model_save_path = os.path.join(dir_path, f"{modelname}.h5")
         best_checkpoint = keras.callbacks.ModelCheckpoint(filepath=model_save_path,
-                                                          monitor='val_loss',
+                                                          monitor='val_acc',
                                                           save_best_only=True,
                                                           save_freq='epoch',
                                                           verbose=verbose)
@@ -43,7 +43,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
 
     print("Training model: ")
     train = model.fit(train_gen,
-                      epochs=2,
+                      epochs=epochs,
                       verbose=verbose,
                       steps_per_epoch=len(train_gen) // batchsize,
                       callbacks=callbacks,

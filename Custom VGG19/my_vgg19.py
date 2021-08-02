@@ -155,7 +155,7 @@ if __name__ == '__main__':
     MODEL_NAME = "my_VGG19"
     BATCH_SIZE = 16
     LABELS, INPUT_SHAPE, Train_Data, Val_Data, Test_Data, save = trainvaltest(BATCH_SIZE=BATCH_SIZE)
-    EPOCHS = 20
+    EPOCHS = 30
 
     model = create_model(inp_shape=INPUT_SHAPE, n_labels=LABELS, model_name=MODEL_NAME)
     evaluatemodel(model=model,
@@ -166,4 +166,5 @@ if __name__ == '__main__':
                   test_gen=Test_Data,
                   batchsize=BATCH_SIZE,
                   epochs=EPOCHS,
+                  patience=5,
                   save=save)

@@ -122,10 +122,13 @@ parser.add_argument('--valistest', help='use part of test data as validation dat
 parser.add_argument('--save', help='save the model and training performance', action='store_true')
 args = parser.parse_args()
 
-def trainvaltest(LABELS=LABELS, BATCH_SIZE=8, validation_split=0.2, D_TYPE=tf.float64, valistest=args.valistest, save=args.save):
+
+def trainvaltest(train_path=train_path, test_path=test_path, LABELS=LABELS, BATCH_SIZE=8, validation_split=0.2, D_TYPE=tf.float64, valistest=args.valistest, save=args.save):
     """Split data into 3 splits (train/test/split) and return after split into batches and
 
     Args:
+        train_path (direcotry): directory to folder of training data
+        test_path (directory): directory to folder of testing data
         LABELS (str, optional): labels of dataset. Defaults to LABELS.
         BATCH_SIZE (int, optional): size of batches for splits. Defaults to 8.
         validation_split (float, optional): percentage of data to use as validation set. Defaults to 0.2.
@@ -154,26 +157,22 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8, validation_split=0.2, D_TYPE=tf.fl
                                                         target_size=IMG_SIZE,
                                                         seed=SEED)
 
-    if valistest:
-        print("\nCreating validation data (from test dataset) generator...")
-        validation_generator = test_datagen.flow_from_directory(test_path,
-                                                                batch_size=BATCH_SIZE,
-                                                                color_mode='rgb',
-                                                                class_mode='sparse',
-                                                                subset='validation',
-                                                                shuffle=True,
-                                                                target_size=IMG_SIZE,
-                                                                seed=SEED)
-    else:
-        print("\nCreating validation data (from training dataset) generator...")
-        validation_generator = train_datagen.flow_from_directory(train_path,
-                                                                 batch_size=BATCH_SIZE,
-                                                                 color_mode='rgb',
-                                                                 class_mode='sparse',
-                                                                 subset='validation',
-                                                                 shuffle=True,
-                                                                 target_size=IMG_SIZE,
-                                                                 seed=SEED)
+    print(f"\nCreating validation data (from {'test' if valistest else 'train'} dataset) generator...")
+    val_generator = test_datagen.flow_from_directory(test_path,
+                                                     batch_size=BATCH_SIZE,
+                                                     color_mode='rgb',
+                                                     class_mode='sparse',
+                                                     subset='validation',
+                                                     shuffle=True,
+                                                     target_size=IMG_SIZE,
+                                                     seed=SEED) if valistest else train_datagen.flow_from_directory(train_path,
+                                                                                                                    batch_size=BATCH_SIZE,
+                                                                                                                    color_mode='rgb',
+                                                                                                                    class_mode='sparse',
+                                                                                                                    subset='validation',
+                                                                                                                    shuffle=True,
+                                                                                                                    target_size=IMG_SIZE,
+                                                                                                                    seed=SEED)
 
     print("\nCreating testing data generator...")
     test_generator = test_datagen.flow_from_directory(test_path,
@@ -188,4 +187,4 @@ def trainvaltest(LABELS=LABELS, BATCH_SIZE=8, validation_split=0.2, D_TYPE=tf.fl
     INPUT_SHAPE = (*IMG_SIZE, 3)
     print(f"\nInput shape -> {INPUT_SHAPE}\n")
 
-    return len(LABELS), INPUT_SHAPE, train_generator, validation_generator, test_generator, save
+    return len(LABELS), INPUT_SHAPE, train_generator, val_generator, test_generator, save
