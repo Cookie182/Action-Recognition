@@ -18,20 +18,11 @@ N_FRAMES = 5  # only save every nth frame
 SEED = 123
 print("Amount of labels ->", len(LABELS), '\n')
 
-sample_sizes = []
-for label in LABELS:
-    label_path = os.path.join(PATH, label)
-    sample_sizes.append((label, len(os.listdir(label_path))))
-
-max_sample_size = max(sample_sizes, key=lambda i: i[1])
-min_sample_size = min(sample_sizes, key=lambda i: i[1])
-print(f"{max_sample_size[0]} has the most samples with {max_sample_size[1]} clips")
-print(f"{min_sample_size[0]} has the least samples with {min_sample_size[1]} clips\n")
-
-samples_count = []
+samples_count, sample_sizes = [], []
 for label in LABELS:
     sample_count = 1
     label_path = os.path.join(PATH, label)
+    sample_sizes.append((label, len(os.listdir(label_path))))
     clips = os.listdir(label_path)
     while True:
         sample_name = f"g0{sample_count}" if sample_count <= 9 else f"g{sample_count}"
@@ -51,8 +42,8 @@ sample_sizes_df = pd.DataFrame(zip([x[1] for x in sample_sizes],
                                                                     [y[1] for y in samples_count])]),
                                columns=["Total Clips", "Samples", "Labels", "Clips per sample"]).set_index("Labels")
 
-print("Top 5 actions with least clips per sample:\n", sample_sizes_df.sort_values('Clips per sample', ascending=True).head(), '\n')
-print("Top 5 actions with most clips per sample\n", sample_sizes_df.sort_values('Clips per sample', ascending=False).head())
+print("Top 10 actions with least clips per sample:\n", sample_sizes_df.sort_values('Clips per sample', ascending=True).head(10), '\n')
+print("Top 10 actions with most clips per sample\n", sample_sizes_df.sort_values('Clips per sample', ascending=False).head(10))
 
 label_trainvaltest_split = dict()
 
@@ -148,7 +139,7 @@ def trainvaltest(train_path=train_path, test_path=test_path, LABELS=LABELS, BATC
                                       dtype=D_TYPE)
 
     print("Creating training data generator...")
-    train_generator = train_datagen.flow_from_directory(train_path,
+    train_generator = train_datagen.flow_from_directory(directory=train_path,
                                                         batch_size=BATCH_SIZE,
                                                         color_mode='rgb',
                                                         class_mode='sparse',
@@ -158,24 +149,17 @@ def trainvaltest(train_path=train_path, test_path=test_path, LABELS=LABELS, BATC
                                                         seed=SEED)
 
     print(f"\nCreating validation data (from {'test' if valistest else 'train'} dataset) generator...")
-    val_generator = test_datagen.flow_from_directory(test_path,
-                                                     batch_size=BATCH_SIZE,
-                                                     color_mode='rgb',
-                                                     class_mode='sparse',
-                                                     subset='validation',
-                                                     shuffle=True,
-                                                     target_size=IMG_SIZE,
-                                                     seed=SEED) if valistest else train_datagen.flow_from_directory(train_path,
-                                                                                                                    batch_size=BATCH_SIZE,
-                                                                                                                    color_mode='rgb',
-                                                                                                                    class_mode='sparse',
-                                                                                                                    subset='validation',
-                                                                                                                    shuffle=True,
-                                                                                                                    target_size=IMG_SIZE,
-                                                                                                                    seed=SEED)
+    val_generator = (test_datagen if valistest else train_datagen).flow_from_directory(directory=test_path if valistest else train_path,
+                                                                                       batch_size=BATCH_SIZE,
+                                                                                       color_mode='rgb',
+                                                                                       class_mode='sparse',
+                                                                                       subset='validation',
+                                                                                       shuffle=True,
+                                                                                       target_size=IMG_SIZE,
+                                                                                       seed=SEED)
 
     print("\nCreating testing data generator...")
-    test_generator = test_datagen.flow_from_directory(test_path,
+    test_generator = test_datagen.flow_from_directory(directory=test_path,
                                                       batch_size=BATCH_SIZE,
                                                       color_mode='rgb',
                                                       class_mode='sparse',
