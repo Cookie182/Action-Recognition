@@ -20,6 +20,12 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 **EACH MODEL RUNS FOR ENOUGH EPOCHS TO LET THE MODEL RUN FOR APPROX. 10 HOURS UNLESS EARLYSTOPPING KICKS IN**
 
+*SEED VALUE TO BE USED IN ALL APPLICABLE INSTANCES: 182*
+
+*EACH MODEL SCRIPT WHEN RUNNING HAS TWO ARGUEMENTS THAT CAN BE PASSED VIA COMMAND LINE: --save and --valistest*
+* *--save: to save the trained model in the same directory of model file, .png image of model training performance, .csv file that documents all metrics when training, and .png image of model structure*
+* *--valistest: to use validation data (20%) from the test dataset rather than, by default, the train dataset*
+
 ## **DIRECTORY STRUCUTRE**
 ```BASH
 .
@@ -162,9 +168,3 @@ Link to [UCF-101 Dataset](https://www.crcv.ucf.edu/data/UCF101.php)
 
 108 directories, 28 files
 ```
-
-*SEED VALUE TO BE USED IN ALL APPLICABLE INSTANCES: 182*
-
-*EACH MODEL SCRIPT WHEN RUNNING HAS TWO ARGUEMENTS THAT CAN BE PASSED VIA COMMAND LINE: --save and --valistest*
-* *--save: to save the trained model in the same directory of model file, .png image of model training performance, .csv file that documents all metrics when training, and .png image of model structure*
-* *--valistest: to use validation data (20%) from the test dataset rather than, by default, the train dataset*
