@@ -1,7 +1,7 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'  # nopep8
 
-FILE_PATH = '\\'.join(os.path.realpath(__file__).split('\\')[:3])  # path to directory for project
+FILE_PATH = '\\'.join(os.path.realpath(__file__).split('\\')[:-1])  # path to directory for project
 from tqdm.auto import tqdm
 import pandas as pd
 import cv2
