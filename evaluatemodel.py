@@ -12,7 +12,6 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
         model (tensorflow model): tensorflow model to train/evaluate/test
         filepath (str): absolute path of model script files
         modelname (str): name of the model file
-        modelpath (str): absolute path to store the trained model and store performance graphs and
         train_gen (tensorflow data generator): training data generator
         val_gen (tensorflow data generator): validation data generator
         test_gen (tensorflow data generator): test data generator
@@ -25,7 +24,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=verbose)
     callbacks = [earlystopping]
 
-    dir_path = os.path.join(*filepath.split("\\")[-2:-1])
+    dir_path = filepath.split("\\")[-2]
     if save:
         model_png_path = os.path.join(dir_path, f"{modelname}_structure.png")
         keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
@@ -72,7 +71,8 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
             train_history[column] = [round(x, 5) for x in train_history[column]]
         train_history.insert(0, 'Epochs', range(1, len(train_history) + 1))
         plt.savefig(os.path.join(dir_path, f"{modelname}_training_performance.png"))
-        train_history.to_csv(os.path.join(dir_path, f"{modelname}_training_performance.txt"), header=train_history.columns, index=None)
+        train_history.to_csv(os.path.join(dir_path, f"{modelname}_training_performance.txt"),
+                             header=train_history.columns, index=None)
 
     plt.show()
     print("\nThank you for using the script!")
