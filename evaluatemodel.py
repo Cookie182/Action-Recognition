@@ -18,7 +18,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
         batchsize (int): batch size of training/validation data
         epochs (int): number of epochs to train model
         patience (int): number of epochs to wait and see if monitored value improves during training. Defaults to 3.
-        verbose (int): verbosity levels for certain functions. Defaults to 2.
+        verbose (int): verbosity levels for certain functions. Defaults to 1.
         save (bool): whether to save the model, and its training performance metrics. Defaults to False.
     """
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=verbose)
