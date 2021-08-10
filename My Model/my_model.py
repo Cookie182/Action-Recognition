@@ -53,10 +53,13 @@ class CNNBlock(layers.Layer):
         self.conv_strides = conv_strides
         self.padding = padding
 
-        self.conv1 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
-        self.conv2 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+        self.conv1 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size,
+                                padding=self.padding, strides=self.conv_strides)
+        self.conv2 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size,
+                                padding=self.padding, strides=self.conv_strides)
         if self.triple == True:
-            self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size, padding=self.padding, strides=self.conv_strides)
+            self.conv3 = conv_layer(filters=self.filters, kernel_size=self.conv_kernel_size,
+                                    padding=self.padding, strides=self.conv_strides)
         self.bn = layers.BatchNormalization()
         self.avgpooling = layers.AveragePooling2D(pool_size=self.pool_size, strides=self.pool_strides)
 
