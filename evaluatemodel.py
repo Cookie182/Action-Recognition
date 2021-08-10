@@ -24,7 +24,7 @@ def evaluatemodel(model, filepath, modelname, train_gen, val_gen, test_gen, batc
     earlystopping = keras.callbacks.EarlyStopping(monitor='val_loss', patience=patience, verbose=verbose)
     callbacks = [earlystopping]
 
-    dir_path = filepath.split("\\")[-2]
+    dir_path = os.path.join(*filepath.split("\\")[:-1])
     if save:
         model_png_path = os.path.join(dir_path, f"{modelname}_structure.png")
         keras.utils.plot_model(model, to_file=model_png_path, show_shapes=True)
