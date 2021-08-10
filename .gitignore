@@ -3,6 +3,6 @@ UCF11_updated_mpg
 *.h5
 __pycache__
 *.png
-directory.txt
+*.txt
 testing
 *.pyc
